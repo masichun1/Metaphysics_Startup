@@ -1,0 +1,229 @@
+{
+  "crawled_at": "2026-05-16T00:42:52.132146",
+  "source": "daozang_classics",
+  "count": 37,
+  "items": [
+    {
+      "title": "道德经",
+      "author": "老子",
+      "category": "道藏",
+      "era": "春秋"
+    },
+    {
+      "title": "庄子",
+      "author": "庄周",
+      "category": "道藏",
+      "era": "战国"
+    },
+    {
+      "title": "列子",
+      "author": "列御寇",
+      "category": "道藏",
+      "era": "战国"
+    },
+    {
+      "title": "周易参同契",
+      "author": "魏伯阳",
+      "category": "丹道",
+      "era": "东汉"
+    },
+    {
+      "title": "黄庭经",
+      "author": "佚名",
+      "category": "丹道",
+      "era": "晋"
+    },
+    {
+      "title": "抱朴子",
+      "author": "葛洪",
+      "category": "丹道",
+      "era": "东晋"
+    },
+    {
+      "title": "太上感应篇",
+      "author": "佚名",
+      "category": "道藏",
+      "era": "宋"
+    },
+    {
+      "title": "文昌帝君阴骘文",
+      "author": "佚名",
+      "category": "道藏",
+      "era": "宋"
+    },
+    {
+      "title": "性命圭旨",
+      "author": "尹真人",
+      "category": "丹道",
+      "era": "明"
+    },
+    {
+      "title": "太乙金华宗旨",
+      "author": "吕洞宾",
+      "category": "丹道",
+      "era": "清"
+    },
+    {
+      "title": "道藏辑要",
+      "author": "彭定求 编",
+      "category": "道藏",
+      "era": "清"
+    },
+    {
+      "title": "云笈七签",
+      "author": "张君房",
+      "category": "道藏",
+      "era": "宋"
+    },
+    {
+      "title": "悟真篇",
+      "author": "张伯端",
+      "category": "丹道",
+      "era": "宋"
+    },
+    {
+      "title": "黄帝阴符经",
+      "author": "佚名",
+      "category": "道藏",
+      "era": "先秦"
+    },
+    {
+      "title": "清静经",
+      "author": "佚名",
+      "category": "道藏",
+      "era": "唐"
+    },
+    {
+      "title": "三命通会",
+      "author": "万民英",
+      "category": "命理",
+      "era": "明"
+    },
+    {
+      "title": "渊海子平",
+      "author": "徐子平",
+      "category": "命理",
+      "era": "宋"
+    },
+    {
+      "title": "滴天髓",
+      "author": "刘伯温",
+      "category": "命理",
+      "era": "明"
+    },
+    {
+      "title": "穷通宝鉴",
+      "author": "余春台",
+      "category": "命理",
+      "era": "清"
+    },
+    {
+      "title": "子平真诠",
+      "author": "沈孝瞻",
+      "category": "命理",
+      "era": "清"
+    },
+    {
+      "title": "神峰通考",
+      "author": "张神峰",
+      "category": "命理",
+      "era": "明"
+    },
+    {
+      "title": "卜筮正宗",
+      "author": "王洪绪",
+      "category": "命理",
+      "era": "清"
+    },
+    {
+      "title": "增删卜易",
+      "author": "野鹤老人",
+      "category": "命理",
+      "era": "清"
+    },
+    {
+      "title": "梅花易数",
+      "author": "邵雍",
+      "category": "命理",
+      "era": "宋"
+    },
+    {
+      "title": "皇极经世",
+      "author": "邵雍",
+      "category": "命理",
+      "era": "宋"
+    },
+    {
+      "title": "葬书",
+      "author": "郭璞",
+      "category": "风水",
+      "era": "晋"
+    },
+    {
+      "title": "撼龙经",
+      "author": "杨筠松",
+      "category": "风水",
+      "era": "唐"
+    },
+    {
+      "title": "宅经",
+      "author": "佚名",
+      "category": "风水",
+      "era": "唐"
+    },
+    {
+      "title": "地理五诀",
+      "author": "赵九峰",
+      "category": "风水",
+      "era": "清"
+    },
+    {
+      "title": "阳宅三要",
+      "author": "赵九峰",
+      "category": "风水",
+      "era": "清"
+    },
+    {
+      "title": "鲁班经",
+      "author": "佚名",
+      "category": "风水",
+      "era": "明"
+    },
+    {
+      "title": "太上老君说常清静经",
+      "author": "佚名",
+      "category": "道藏",
+      "era": "先秦"
+    },
+    {
+      "title": "度人经",
+      "author": "佚名",
+      "category": "道藏",
+      "era": "魏晋"
+    },
+    {
+      "title": "玉皇经",
+      "author": "佚名",
+      "category": "道藏",
+      "era": "宋"
+    },
+    {
+      "title": "北斗经",
+      "author": "佚名",
+      "category": "道藏",
+      "era": "唐"
+    },
+    {
+      "title": "三官经",
+      "author": "佚名",
+      "category": "道藏",
+      "era": "南北朝"
+    },
+    {
+      "title": "道德真經廣聖義",
+      "author": "杜光庭",
+      "category": "道藏",
+      "era": "唐"
+    }
+  ]
+}

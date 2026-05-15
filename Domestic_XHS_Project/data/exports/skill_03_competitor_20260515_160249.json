@@ -1,0 +1,36 @@
+{
+  "generated_at": "2026-05-15T16:02:49.465468+00:00",
+  "topic": "塔罗",
+  "notes_analyzed": 0,
+  "viral_formulas": [],
+  "title_patterns": [],
+  "cover_styles": {},
+  "tag_strategies": [],
+  "content_templates": [
+    {
+      "type": "悬念型",
+      "title_template": "{number}个塔罗的秘密，第{N}个让人意想不到",
+      "structure": "开头悬念 -> 逐个揭秘 -> 互动引导",
+      "example": "5个塔罗牌的秘密，第3个让我起鸡皮疙瘩"
+    },
+    {
+      "type": "干货型",
+      "title_template": "塔罗新手必看！塔罗入门指南（建议收藏）",
+      "structure": "痛点引入 -> 分步教程 -> 收藏引导",
+      "example": "塔罗新手必看！3分钟学会最简单的三牌阵"
+    },
+    {
+      "type": "情感型",
+      "title_template": "如果你正在经历{情感}，塔罗想对你说...",
+      "structure": "情感共鸣 -> {topic}解读 -> 温暖收尾",
+      "example": "如果你正在经历分手，塔罗想对你说这些话"
+    },
+    {
+      "type": "争议型",
+      "title_template": "为什么你的{行为}可能是错的？塔罗告诉你真相",
+      "structure": "观点抛出 -> 论据支撑 -> 评论区讨论引导",
+      "example": "为什么你的冥想可能是错的？90%的人都忽略了这个"
+    }
+  ],
+  "claude_analysis": ""
+}

@@ -6,11 +6,12 @@ OpenCLI 负责爬取，Claude 负责分析趋势和输出优化建议。
 
 import json
 import logging
+from core.logger import get_logger
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-logger = logging.getLogger("xhs.skill_01")
+logger = get_logger("xhs.skill_01")
 
 _EXPORT_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "exports"
 

@@ -20,7 +20,7 @@ from core.exceptions import (
     RateLimitError,
 )
 
-logger = logging.getLogger("xhs.browser")
+logger = get_logger("xhs.browser")
 
 # Attempt to import Playwright — it's optional at import time
 try:

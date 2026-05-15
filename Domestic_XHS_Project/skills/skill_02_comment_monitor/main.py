@@ -6,13 +6,14 @@ OpenCLI 爬取评论区 -> Claude NLP 情感分析 + 意图识别 -> 输出潜�
 
 import json
 import logging
+from core.logger import get_logger
 import re
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-logger = logging.getLogger("xhs.skill_02")
+logger = get_logger("xhs.skill_02")
 
 _EXPORT_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "exports"
 

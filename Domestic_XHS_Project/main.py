@@ -126,14 +126,25 @@ Examples:
     ai_client = get_ai_client(config)
 
     if args.command == "run":
+        skill = args.skill
         kwargs = {}
-        for key in ["topic", "niche", "days", "keywords", "accounts", "note_title"]:
-            if hasattr(args, key):
-                val = getattr(args, key)
-                if val is not None:
-                    kwargs[key] = val
+        # Map params per skill
+        if skill in ("skill_01",):
+            if hasattr(args, "keywords") and args.keywords:
+                kwargs["keywords"] = args.keywords
+            if hasattr(args, "accounts") and args.accounts:
+                kwargs["accounts"] = args.accounts
+        elif skill in ("skill_02",):
+            if hasattr(args, "note_title") and args.note_title:
+                kwargs["note_title"] = args.note_title
+        elif skill in ("skill_03",):
+            kwargs["topic"] = getattr(args, "topic", "塔罗") or "塔罗"
+        elif skill in ("skill_04", "skill_05"):
+            kwargs["niche"] = getattr(args, "niche", "塔罗占卜") or "塔罗占卜"
+            if hasattr(args, "days") and args.days:
+                kwargs["days"] = args.days
 
-        result = run_skill(args.skill, config, ai_client, **kwargs)
+        result = run_skill(skill, config, ai_client, **kwargs)
 
         print(f"\n{'='*50}")
         print(f"Skill: {args.skill}")

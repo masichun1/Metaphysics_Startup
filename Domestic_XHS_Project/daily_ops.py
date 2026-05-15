@@ -1,0 +1,628 @@
+#!/usr/bin/env python3
+"""小红书每日自动化运营 — 5大 Skills 集成
+
+每日执行流程:
+  1. 登录验证 + 安全检测
+  2. Skill 01 — 数据自动追踪 (搜索关键词, 采集指标)
+  3. Skill 02 — 评论区监控 (情感分析, 线索提取)
+  4. Skill 03 — 竞品调研 (爆款拆解)
+  5. Skill 04 — 冷启动辅助 (AI 生成明天要发的文案)
+  6. Skill 05 — 引导关注 (话术库生成)
+  7. 养号 — 30分钟自然浏览
+  8. 日报生成 + 数据存档
+
+安全红线:
+  - 每次操作间隔 2-8 秒随机延迟
+  - 每小时最多 30 次页面操作
+  - 模拟真人滚动和鼠标轨迹
+  - 自动检测验证码并暂停
+"""
+
+import json
+import os
+import random
+import sys
+import time
+import csv
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from xhs_operator import XHSOperator
+
+# 配置
+DATA_DIR = Path(__file__).resolve().parent / "data"
+EXPORT_DIR = DATA_DIR / "exports"
+REPORT_DIR = DATA_DIR / "reports"
+CSV_DIR = DATA_DIR / "csv"
+
+# 关键词配置
+TRACK_KEYWORDS = ["命理", "塔罗", "八字", "星座", "道家", "风水"]
+COMPETITOR_KEYWORDS = ["道家玄学", "命理分析", "塔罗占卜", "八字算命", "星座运势"]
+
+# 对标账号
+BENCHMARK_ACCOUNTS = [
+    "南山道长",
+    "清玄小记",
+    "道心暖暖",
+]
+
+# 安全参数
+MIN_DELAY = 3  # 最小操作间隔(秒)
+MAX_DELAY = 8  # 最大操作间隔(秒)
+MAX_OPS_PER_HOUR = 25  # 每小时最大操作数
+
+
+class DailyOps:
+    """小红书每日自动化运营"""
+
+    def __init__(self):
+        self.op: XHSOperator | None = None
+        self.start_time = time.monotonic()
+        self.op_count = 0
+        self.report = {
+            "date": datetime.now().strftime("%Y-%m-%d"),
+            "started_at": datetime.now().isoformat(),
+            "skills": {},
+            "yanghao": {},
+            "next_post": {},
+        }
+
+        # Ensure directories
+        for d in [EXPORT_DIR, REPORT_DIR, CSV_DIR]:
+            d.mkdir(parents=True, exist_ok=True)
+
+    def safe_delay(self, min_s: float = None, max_s: float = None):
+        """安全延迟 + 频率检查"""
+        if self.op_count >= MAX_OPS_PER_HOUR:
+            cooldown = random.uniform(60, 180)
+            print(f"    [COOLDOWN] {self.op_count} ops reached, waiting {cooldown:.0f}s...")
+            time.sleep(cooldown)
+            self.op_count = 0
+        delay = random.uniform(min_s or MIN_DELAY, max_s or MAX_DELAY)
+        time.sleep(delay)
+        self.op_count += 1
+
+    def check_rate_limit(self):
+        """检查是否需要暂停以保持安全"""
+        elapsed = (time.monotonic() - self.start_time) / 60
+        rpm = self.op_count / elapsed if elapsed > 0 else 0
+        if rpm > 2:  # 每分钟最多2次操作
+            wait = random.uniform(30, 60)
+            print(f"    [RATE LIMIT] RPM={rpm:.1f}, waiting {wait:.0f}s...")
+            time.sleep(wait)
+
+    # ============================================================
+    # Skill 01 — 数据自动追踪
+    # ============================================================
+    def skill_01_data_tracking(self):
+        """搜索关键词 → 采集笔记数据 → 保存CSV"""
+        print("\n" + "=" * 50)
+        print("Skill 01 — 数据自动追踪")
+        print("=" * 50)
+
+        all_data = []
+        page = self.op.page
+
+        for kw in TRACK_KEYWORDS:
+            print(f"\n  [*] 搜索关键词: {kw}")
+            try:
+                url = f"https://www.xiaohongshu.com/search_result?keyword={kw}"
+                page.goto(url, timeout=30000, wait_until="domcontentloaded")
+                self.safe_delay(4, 6)
+
+                # 滚动加载
+                for i in range(3):
+                    page.evaluate("window.scrollBy(0, 500)")
+                    time.sleep(1.5)
+
+                # 提取笔记数据
+                notes = page.evaluate("""() => {
+                    const sections = document.querySelectorAll('section.note-item');
+                    return Array.from(sections).slice(0, 15).map(s => {
+                        const title = s.querySelector('.title, footer a span')?.textContent?.trim() || '';
+                        const author = s.querySelector('.author .name, .nickname')?.textContent?.trim() || '';
+                        const likes = s.querySelector('.like-wrapper span, .count')?.textContent?.trim() || '0';
+                        const link = s.querySelector('a[href*="/explore/"]')?.href || '';
+                        return {title, author, likes, link};
+                    }).filter(n => n.title.length > 3);
+                }""")
+
+                for n in notes:
+                    n["keyword"] = kw
+                    n["collected_at"] = datetime.now().isoformat()
+
+                all_data.extend(notes)
+                print(f"    [OK] {kw}: {len(notes)} notes found")
+
+            except Exception as e:
+                print(f"    [ERR] {kw}: {e}")
+
+        # Save to CSV
+        if all_data:
+            csv_path = CSV_DIR / f"skill_01_data_{datetime.now().strftime('%Y%m%d')}.csv"
+            with open(csv_path, "w", newline="", encoding="utf-8-sig") as f:
+                writer = csv.DictWriter(f, fieldnames=["keyword", "title", "author", "likes", "link", "collected_at"])
+                writer.writeheader()
+                writer.writerows(all_data)
+            print(f"\n  [SAVED] {len(all_data)} rows → {csv_path}")
+
+        # Save JSON
+        json_path = EXPORT_DIR / f"skill_01_data_{datetime.now().strftime('%Y%m%d')}.json"
+        with open(json_path, "w", encoding="utf-8") as f:
+            json.dump({"date": datetime.now().isoformat(), "total": len(all_data), "items": all_data}, f, indent=2, ensure_ascii=False)
+
+        self.report["skills"]["01_data_tracking"] = {
+            "total_notes": len(all_data),
+            "keywords_used": len(TRACK_KEYWORDS),
+            "csv_path": str(csv_path) if all_data else "",
+        }
+        return all_data
+
+    # ============================================================
+    # Skill 02 — 评论区监控
+    # ============================================================
+    def skill_02_comment_monitor(self, note_urls: list[str] | None = None):
+        """监控评论区 → 情感分析 → 线索提取"""
+        print("\n" + "=" * 50)
+        print("Skill 02 — 评论区监控")
+        print("=" * 50)
+
+        # If no specific URLs, check recent notes from search
+        if not note_urls:
+            note_urls = []
+            # Search for our niche to find notes with comments
+            for kw in ["道家", "命理"]:
+                url = f"https://www.xiaohongshu.com/search_result?keyword={kw}&sort=time"
+                self.op.page.goto(url, timeout=30000, wait_until="domcontentloaded")
+                self.safe_delay(3, 5)
+                links = self.op.page.evaluate("""() => {
+                    return Array.from(document.querySelectorAll('a[href*="/explore/"]'))
+                        .map(a => a.href).filter(h => h.includes('/explore/')).slice(0, 5);
+                }""")
+                note_urls.extend(links)
+                note_urls = list(set(note_urls))[:5]
+
+        all_comments = []
+        for note_url in note_urls:
+            print(f"\n  [*] 查看评论: {note_url[:60]}...")
+            try:
+                self.op.page.goto(note_url, timeout=30000, wait_until="domcontentloaded")
+                self.safe_delay(3, 5)
+
+                # 滚动到评论区
+                self.op.page.evaluate("window.scrollTo(0, document.body.scrollHeight * 0.4)")
+                self.safe_delay(2, 3)
+
+                comments = self.op.page.evaluate("""() => {
+                    const items = document.querySelectorAll('.comment-item, [class*="comment-item"]');
+                    return Array.from(items).slice(0, 30).map(c => {
+                        const user = c.querySelector('.name, .nickname, [class*="name"]')?.textContent?.trim() || '';
+                        const text = c.querySelector('.content, [class*="content"]')?.textContent?.trim() || '';
+                        const time = c.querySelector('.date, .time')?.textContent?.trim() || '';
+                        return {user, text, time};
+                    }).filter(c => c.text.length > 2);
+                }""")
+
+                # 简单情感分析
+                for c in comments:
+                    c["sentiment"] = self._analyze_sentiment(c.get("text", ""))
+                    c["intent"] = self._detect_intent(c.get("text", ""))
+                    c["source_url"] = note_url
+
+                all_comments.extend(comments)
+                print(f"    [OK] {len(comments)} comments extracted")
+
+            except Exception as e:
+                print(f"    [ERR] {e}")
+
+        # Save
+        if all_comments:
+            path = EXPORT_DIR / f"skill_02_comments_{datetime.now().strftime('%Y%m%d')}.json"
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump({"date": datetime.now().isoformat(), "total": len(all_comments), "comments": all_comments}, f, indent=2, ensure_ascii=False)
+
+            # Stats
+            sentiments = {"positive": 0, "neutral": 0, "negative": 0}
+            intents = {"purchase": 0, "question": 0, "none": 0}
+            for c in all_comments:
+                sentiments[c.get("sentiment", "neutral")] += 1
+                intents[c.get("intent", "none")] += 1
+
+            print(f"\n    情感分布: {sentiments}")
+            print(f"    意图分布: {intents}")
+
+        self.report["skills"]["02_comment_monitor"] = {
+            "notes_checked": len(note_urls),
+            "total_comments": len(all_comments),
+        }
+        return all_comments
+
+    # ============================================================
+    # Skill 03 — 竞品/同行调研
+    # ============================================================
+    def skill_03_competitor_research(self):
+        """搜索竞品关键词 → 提取爆款 → 拆解公式"""
+        print("\n" + "=" * 50)
+        print("Skill 03 — 竞品/同行调研")
+        print("=" * 50)
+
+        viral_notes = []
+        for kw in COMPETITOR_KEYWORDS[:3]:
+            print(f"\n  [*] 调研关键词: {kw}")
+            try:
+                url = f"https://www.xiaohongshu.com/search_result?keyword={kw}&sort=general"
+                self.op.page.goto(url, timeout=30000, wait_until="domcontentloaded")
+                self.safe_delay(4, 6)
+
+                for i in range(3):
+                    self.op.page.evaluate("window.scrollBy(0, 600)")
+                    time.sleep(1.5)
+
+                notes = self.op.page.evaluate("""() => {
+                    const sections = document.querySelectorAll('section.note-item');
+                    return Array.from(sections).slice(0, 15).map(s => {
+                        const title = s.querySelector('.title, footer a span')?.textContent?.trim() || '';
+                        const author = s.querySelector('.author .name, .nickname')?.textContent?.trim() || '';
+                        const likes = s.querySelector('.like-wrapper span, .count')?.textContent?.trim() || '0';
+                        const link = s.querySelector('a[href*="/explore/"]')?.href || '';
+                        return {title, author, likes, link};
+                    }).filter(n => n.title.length > 5 && parseInt(n.likes) > 100);
+                }""")
+
+                viral_notes.extend(notes)
+                print(f"    [OK] {len(notes)} high-engagement notes")
+
+            except Exception as e:
+                print(f"    [ERR] {kw}: {e}")
+
+        # 分析标题模式
+        title_patterns = self._extract_title_patterns(viral_notes)
+
+        result = {
+            "date": datetime.now().isoformat(),
+            "total_viral_notes": len(viral_notes),
+            "viral_notes": viral_notes[:20],
+            "title_patterns": title_patterns,
+        }
+
+        path = EXPORT_DIR / f"skill_03_competitor_{datetime.now().strftime('%Y%m%d')}.json"
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(result, f, indent=2, ensure_ascii=False)
+
+        self.report["skills"]["03_competitor"] = {
+            "viral_notes_found": len(viral_notes),
+            "title_patterns": title_patterns[:5],
+        }
+        return result
+
+    # ============================================================
+    # Skill 04 — 冷启动辅助 (AI 生成文案)
+    # ============================================================
+    def skill_04_generate_post(self, competitor_data: dict | None = None):
+        """基于竞品数据 → Claude 生成明天要发的文案"""
+        print("\n" + "=" * 50)
+        print("Skill 04 — 冷启动辅助 / AI 文案生成")
+        print("=" * 50)
+
+        # 从知识库 + 竞品数据构建 Prompt
+        context = ""
+        if competitor_data:
+            viral_titles = [n.get("title", "") for n in competitor_data.get("viral_notes", [])[:5]]
+            patterns = competitor_data.get("title_patterns", [])
+            context = f"""
+竞品爆款标题样本：
+{json.dumps(viral_titles, ensure_ascii=False, indent=2)}
+
+爆款标题模式：
+{json.dumps(patterns, ensure_ascii=False, indent=2)}
+"""
+
+        prompt = f"""你是小红书"道家玄学"赛道的专业运营。请生成明天（{datetime.now().date() + timedelta(days=1)}）要发布的一篇小红书笔记。
+
+赛道：道家玄学 / 命理
+账号定位：专业道家修行人，用温暖易懂的方式分享道家智慧
+目标用户：25-40岁对玄学好奇的女性
+
+{context}
+
+请生成完整笔记内容，包含：
+1. 【标题】（高点击率，吸引点击，用中文）
+2. 【正文】（3-5段落，每段不超过150字，轻松自然的语气）
+3. 【标签】（5-8个相关标签）
+4. 【封面建议】（描述封面应该是什么样的）
+5. 【发布时间建议】（明天几点发）
+
+格式：用JSON格式输出，keys: title, body, tags, cover_suggestion, publish_time"""
+
+        generated = None
+        try:
+            # Use AI client if available
+            sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "Cross_Border_Project"))
+            from core.ai_client import AIClient
+            from core.config_loader import load_config as cb_load_config
+
+            config = cb_load_config()
+            ai = AIClient(config)
+            response = ai.generate_text(user_prompt=prompt, max_tokens=2000)
+            print(f"    [AI] Generated {len(response)} chars")
+
+            # Try to parse JSON
+            import re
+            json_match = re.search(r'\{.*\}', response, re.DOTALL)
+            if json_match:
+                generated = json.loads(json_match.group())
+            else:
+                generated = {"raw_response": response}
+
+        except Exception as e:
+            print(f"    [AI ERR] {e}")
+            # Fallback: use template
+            generated = {
+                "title": f"道家智慧 | 每日一悟 {datetime.now().strftime('%m月%d日')}",
+                "body": "今日道语：上善若水，水善利万物而不争。\n\n现代生活中，我们常常过于执着于'赢'，却忘了'放下'才是真正的智慧。\n\n今天给你的建议：\n1. 不必事事争第一\n2. 顺其自然，事缓则圆\n3. 睡前静坐5分钟\n\n你最近有什么放不下的事吗？评论区聊聊。",
+                "tags": ["道家智慧", "每日一悟", "心灵成长", "国学", "修心", "人生感悟"],
+                "cover_suggestion": "素色背景+手写标题字+米白/墨绿色调",
+                "publish_time": "明天 20:30",
+            }
+
+        # Save generated post
+        path = EXPORT_DIR / f"skill_04_post_{datetime.now().strftime('%Y%m%d')}_tomorrow.json"
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(generated, f, indent=2, ensure_ascii=False)
+
+        self.report["skills"]["04_generate_post"] = {
+            "generated": generated is not None,
+            "save_path": str(path),
+        }
+        self.report["next_post"] = generated
+        return generated
+
+    # ============================================================
+    # Skill 05 — 引导关注话术
+    # ============================================================
+    def skill_05_conversion_scripts(self):
+        """生成引导关注/转化话术库"""
+        print("\n" + "=" * 50)
+        print("Skill 05 — 引导关注话术")
+        print("=" * 50)
+
+        scripts = {
+            "generated_at": datetime.now().isoformat(),
+            "comment_reply": [
+                {"trigger": "好准/太对了/真的", "reply": "谢谢认可！主页每天更新道家智慧，关注不迷路~"},
+                {"trigger": "怎么学/如何入门", "reply": "可以从主页的入门笔记开始看哦，有系统的学习路径~"},
+                {"trigger": "想问/帮我看看", "reply": "可以看主页置顶笔记，或者评论区留言我下期讲~"},
+            ],
+            "note_cta": [
+                "如果对你有帮助，点个收藏慢慢看 | 每天分享道家智慧，关注不亏",
+                "你遇到过类似情况吗？评论区说说 | 明天更新更有趣的内容",
+                "主页整理了更多道家入门干货，已经帮你分类好了",
+            ],
+            "dm_reply": [
+                "你好呀！感谢关注。你想了解哪方面？命理/风水/修行/养生？",
+                "收到你的私信啦~具体问题可以描述一下，我有空回复你",
+            ],
+            "safety_notice": [
+                "每小时最多回复5条评论",
+                "每次回复间隔2-5分钟",
+                "不直接发微信号/二维码/外链",
+                "先用价值内容吸引，再自然引导主页关注",
+            ],
+        }
+
+        path = EXPORT_DIR / f"skill_05_scripts_{datetime.now().strftime('%Y%m%d')}.json"
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(scripts, f, indent=2, ensure_ascii=False)
+
+        self.report["skills"]["05_conversion"] = {"scripts_count": len(scripts["comment_reply"])}
+        return scripts
+
+    # ============================================================
+    # 养号 — 每日30分钟自然浏览
+    # ============================================================
+    def yanghao(self, duration_minutes: int = 30):
+        """每日养号：模拟真人浏览，给算法打标签"""
+        print("\n" + "=" * 50)
+        print(f"养号 — 模拟真人浏览 {duration_minutes} 分钟")
+        print("=" * 50)
+
+        page = self.op.page
+        duration_seconds = duration_minutes * 60
+        start = time.monotonic()
+
+        # 养号行为：浏览首页 → 搜索关键词 → 看笔记 → 点赞/收藏 → 偶尔评论
+        yanghao_keywords = ["命理", "塔罗", "八字", "星座", "道家", "风水"]
+        actions = []
+
+        while (time.monotonic() - start) < duration_seconds:
+            try:
+                # 随机选择行为
+                behavior = random.choice(["browse_feed", "search", "read_note", "scroll"])
+                elapsed = (time.monotonic() - start) / 60
+
+                if behavior == "browse_feed":
+                    page.goto("https://www.xiaohongshu.com/explore", timeout=30000, wait_until="domcontentloaded")
+                    self.safe_delay(4, 8)
+                    for _ in range(3):
+                        page.evaluate(f"window.scrollBy(0, {random.randint(300, 800)})")
+                        time.sleep(random.uniform(1, 3))
+                    actions.append({"action": "browse_feed", "time": f"{elapsed:.1f}m"})
+
+                elif behavior == "search":
+                    kw = random.choice(yanghao_keywords)
+                    page.goto(f"https://www.xiaohongshu.com/search_result?keyword={kw}", timeout=30000, wait_until="domcontentloaded")
+                    self.safe_delay(3, 6)
+                    for _ in range(2):
+                        page.evaluate(f"window.scrollBy(0, {random.randint(400, 700)})")
+                        time.sleep(random.uniform(1.5, 3))
+                    actions.append({"action": "search", "keyword": kw, "time": f"{elapsed:.1f}m"})
+
+                elif behavior == "read_note":
+                    # 点开一篇笔记认真看
+                    links = page.evaluate("""() => {
+                        return Array.from(document.querySelectorAll('a[href*="/explore/"]'))
+                            .map(a => a.href).filter(h => h.includes('/explore/')).slice(0, 5);
+                    }""")
+                    if links:
+                        note_url = random.choice(links)
+                        page.goto(note_url, timeout=30000, wait_until="domcontentloaded")
+                        self.safe_delay(6, 12)  # "认真阅读"
+                        page.evaluate("window.scrollTo(0, document.body.scrollHeight * random())")
+                        self.safe_delay(3, 5)
+                        actions.append({"action": "read_note", "url": note_url[:60], "time": f"{elapsed:.1f}m"})
+
+                elif behavior == "scroll":
+                    page.evaluate(f"window.scrollBy(0, {random.randint(-300, 500)})")
+                    self.safe_delay(2, 4)
+
+                print(f"  [养号 {elapsed:.1f}m] {behavior}: {actions[-1].get('keyword', actions[-1].get('url', ''))[:40] if actions else ''}")
+
+            except Exception as e:
+                print(f"  [养号 ERR] {e}")
+                self.safe_delay(5, 10)
+
+        self.report["yanghao"] = {
+            "duration_minutes": f"{duration_minutes}",
+            "actions": len(actions),
+            "keywords_browsed": len([a for a in actions if a.get("keyword")]),
+        }
+        print(f"\n  [OK] 养号完成: {len(actions)} actions in {duration_minutes}min")
+
+    # ============================================================
+    # 辅助方法
+    # ============================================================
+    @staticmethod
+    def _analyze_sentiment(text: str) -> str:
+        pos = ["好", "赞", "喜欢", "厉害", "准", "有用", "感谢", "谢谢", "推荐", "棒", "绝", "真的", "牛", "爱"]
+        neg = ["差", "骗", "坑", "假", "不准", "没用", "失望", "垃圾", "后悔", "烂", "坑人"]
+        pos_score = sum(1 for w in pos if w in text)
+        neg_score = sum(1 for w in neg if w in text)
+        if pos_score > neg_score:
+            return "positive"
+        elif neg_score > pos_score:
+            return "negative"
+        return "neutral"
+
+    @staticmethod
+    def _detect_intent(text: str) -> str:
+        purchase_kw = ["多少钱", "怎么买", "在哪里", "价格", "链接", "私我", "求推荐", "想买", "收费", "预约"]
+        question_kw = ["怎么样", "有用吗", "真的假的", "效果", "准吗", "怎么用", "适合吗", "能不能"]
+        if any(kw in text for kw in purchase_kw):
+            return "purchase"
+        if any(kw in text for kw in question_kw):
+            return "question"
+        return "none"
+
+    @staticmethod
+    def _extract_title_patterns(notes: list[dict]) -> list[str]:
+        patterns = []
+        for n in notes:
+            title = n.get("title", "")
+            if "？" in title or "?" in title:
+                patterns.append("疑问型")
+            elif any(title.startswith(str(i)) for i in range(10)):
+                patterns.append("数字型")
+            elif any(kw in title for kw in ["千万别", "后悔", "秘密", "真相"]):
+                patterns.append("悬念型")
+            elif any(kw in title for kw in ["怎么办", "为什么", "怎么"]):
+                patterns.append("解决问题型")
+            else:
+                patterns.append("陈述型")
+        from collections import Counter
+        return [{"pattern": k, "count": v} for k, v in Counter(patterns).most_common(5)]
+
+    # ============================================================
+    # 日报生成
+    # ============================================================
+    def generate_report(self):
+        """生成日报"""
+        report_path = REPORT_DIR / f"daily_report_{datetime.now().strftime('%Y%m%d')}.json"
+        with open(report_path, "w", encoding="utf-8") as f:
+            json.dump(self.report, f, indent=2, ensure_ascii=False)
+        print(f"\n  [REPORT] {report_path}")
+        return report_path
+
+    # ============================================================
+    # 主运行
+    # ============================================================
+    def run(self, skip_yanghao: bool = False):
+        """执行每日全部运营任务"""
+        print("=" * 60)
+        print(f"   Mystic Sanctuary — 小红书每日运营")
+        print(f"   {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print("=" * 60)
+
+        with XHSOperator(headless=False) as self.op:
+            # 验证登录
+            print("\n[1/7] 验证登录状态...")
+            self.op.page.goto("https://www.xiaohongshu.com/explore", timeout=30000, wait_until="domcontentloaded")
+            self.safe_delay(3, 5)
+            if "login" in self.op.page.url.lower():
+                print("[FAIL] 未登录! 请先运行: python xhs_operator.py login")
+                return
+            print("[OK] 登录状态正常")
+            self.report["login_status"] = "OK"
+
+            # Skill 01 — 数据追踪
+            data = self.skill_01_data_tracking()
+            self.check_rate_limit()
+
+            # Skill 03 — 竞品调研
+            competitor = self.skill_03_competitor_research()
+            self.check_rate_limit()
+
+            # Skill 04 — 生成明天文案
+            next_post = self.skill_04_generate_post(competitor)
+            self.check_rate_limit()
+
+            # Skill 02 — 评论监控
+            self.skill_02_comment_monitor()
+            self.check_rate_limit()
+
+            # Skill 05 — 引导关注话术
+            self.skill_05_conversion_scripts()
+
+            # 养号
+            if not skip_yanghao:
+                self.yanghao(duration_minutes=30)
+
+            # 日报
+            self.generate_report()
+
+        print("\n" + "=" * 60)
+        print(f"   每日运营完成!")
+        print(f"   下一篇文案已保存")
+        print(f"   数据已归档")
+        print("=" * 60)
+
+
+# ============================================================
+# CLI
+# ============================================================
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="小红书每日自动化运营")
+    parser.add_argument("--skip-yanghao", action="store_true", help="跳过养号环节")
+    parser.add_argument("--skill", type=int, choices=[1, 2, 3, 4, 5], help="只运行单个Skill")
+    args = parser.parse_args()
+
+    ops = DailyOps()
+
+    if args.skill:
+        with XHSOperator(headless=False) as ops.op:
+            ops.op.page.goto("https://www.xiaohongshu.com/explore", timeout=30000, wait_until="domcontentloaded")
+            ops.safe_delay(3, 5)
+            if args.skill == 1:
+                ops.skill_01_data_tracking()
+            elif args.skill == 2:
+                ops.skill_02_comment_monitor()
+            elif args.skill == 3:
+                ops.skill_03_competitor_research()
+            elif args.skill == 4:
+                ops.skill_04_generate_post()
+            elif args.skill == 5:
+                ops.skill_05_conversion_scripts()
+    else:
+        ops.run(skip_yanghao=args.skip_yanghao)

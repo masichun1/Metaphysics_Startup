@@ -1,0 +1,28 @@
+[
+  {
+    "id": "MS-20260515-0001",
+    "customer": {
+      "first_name": "Test",
+      "last_name": "User",
+      "email": "test@test.com",
+      "address": "123 Main St",
+      "city": "NYC",
+      "state": "NY",
+      "zip": "10001",
+      "country": "US"
+    },
+    "items": [
+      {
+        "sku": "CRY-001",
+        "title": "Test Bracelet",
+        "price": 44.99,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 44.99,
+    "shipping": 5.99,
+    "total": 50.98,
+    "created_at": "2026-05-15T10:41:14.167556+00:00",
+    "status": "pending"
+  }
+]

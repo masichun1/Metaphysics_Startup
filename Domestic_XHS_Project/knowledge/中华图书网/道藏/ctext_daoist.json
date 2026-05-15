@@ -1,0 +1,655 @@
+{
+  "crawled_at": "2026-05-16T00:42:52.129143",
+  "source": "ctext_daoist",
+  "count": 108,
+  "items": [
+    {
+      "title": "本站介紹",
+      "url": "https://ctext.org/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "字體試驗頁",
+      "url": "font-test-page/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "常見問答集",
+      "url": "faq/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "使用說明",
+      "url": "instructions/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "系統統計",
+      "url": "system-statistics/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "數位人文",
+      "url": "digital-humanities/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "先秦兩漢",
+      "url": "pre-qin-and-han/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "春秋繁露",
+      "url": "chun-qiu-fan-lu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "韓詩外傳",
+      "url": "han-shi-wai-zhuan/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "大戴禮記",
+      "url": "da-dai-li-ji/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "白虎通德論",
+      "url": "bai-hu-tong/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "揚子法言",
+      "url": "yangzi-fayan/zh",
+      "source": "ctext.org",
+      "category": "符咒"
+    },
+    {
+      "title": "孔子家語",
+      "url": "kongzi-jiayu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "風俗通義",
+      "url": "fengsutongyi/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "蔡中郎集",
+      "url": "caizhong-langji/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "魯勝墨辯注敘",
+      "url": "mo-bian-zhu-xu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "文始真經",
+      "url": "wenshi-zhenjing/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "老子河上公章句",
+      "url": "heshanggong/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "諫逐客書",
+      "url": "jian-zhu-ke-shu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "公孫龍子",
+      "url": "gongsunlongzi/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "孫子兵法",
+      "url": "art-of-war/zh",
+      "source": "ctext.org",
+      "category": "符咒"
+    },
+    {
+      "title": "海島算經",
+      "url": "hai-dao-suan-jing/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "九章算術",
+      "url": "nine-chapters/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "孫子算經",
+      "url": "sunzi-suan-jing/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "周髀算經",
+      "url": "zhou-bi-suan-jing/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "呂氏春秋",
+      "url": "lv-shi-chun-qiu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "春秋左傳",
+      "url": "chun-qiu-zuo-zhuan/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "晏子春秋",
+      "url": "yanzi-chun-qiu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "吳越春秋",
+      "url": "wu-yue-chun-qiu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "春秋穀梁傳",
+      "url": "guliang-zhuan/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "春秋公羊傳",
+      "url": "gongyang-zhuan/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "東觀漢記",
+      "url": "dong-guan-han-ji/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "竹書紀年",
+      "url": "zhushu-jinian/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "穆天子傳",
+      "url": "mutianzi-zhuan/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "西京雜記",
+      "url": "xijing-zaji/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "經典文獻",
+      "url": "ancient-classics/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "焦氏易林",
+      "url": "jiaoshi-yilin/zh",
+      "source": "ctext.org",
+      "category": "命理"
+    },
+    {
+      "title": "京氏易傳",
+      "url": "jingshi-yizhuan/zh",
+      "source": "ctext.org",
+      "category": "命理"
+    },
+    {
+      "title": "說文解字",
+      "url": "shuo-wen-jie-zi/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "黃帝內經",
+      "url": "huangdi-neijing/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "金匱要略",
+      "url": "jinkui-yaolue/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "出土文獻",
+      "url": "excavated-texts/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "漢代之後",
+      "url": "post-han/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "魏晉南北朝",
+      "url": "wei-jin-and-north-south/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "道德真經註",
+      "url": "dao-de-zhen-jing-zhu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "世說新語",
+      "url": "shi-shuo-xin-yu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "顏氏家訓",
+      "url": "yan-shi-jia-xun/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "文心雕龍",
+      "url": "wenxin-diaolong/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "群書治要",
+      "url": "qunshu-zhiyao/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "藝文類聚",
+      "url": "yiwen-leiju/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "黃帝陰符經",
+      "url": "yinfujing/zh",
+      "source": "ctext.org",
+      "category": "符咒"
+    },
+    {
+      "title": "四書章句集注",
+      "url": "si-shu-zhang-ju-ji-zhu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "論語注疏",
+      "url": "lunyu-zhushu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "三國演義",
+      "url": "sanguo-yanyi/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "封神演義",
+      "url": "fengshen-yanyi/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "孝經注疏",
+      "url": "xiaojing-zhushu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "太平御覽",
+      "url": "taiping-yulan/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "太平廣記",
+      "url": "taiping-guangji/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "朱子語類",
+      "url": "zhuzi-yulei/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "宋景文公筆記",
+      "url": "yingwengong/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "墨子閒詁",
+      "url": "mozi-jiangu/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "康熙字典",
+      "url": "kangxi-zidian/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "儒林外史",
+      "url": "rulin-waishi/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "墨經校釋",
+      "url": "mo-jing-jiao-shi/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "簡介說明",
+      "url": "notes/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "相關資料",
+      "url": "resource.pl?node=3925&amp;if=gb",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "數據維基",
+      "url": "datawiki.pl?if=gb",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "高級檢索",
+      "url": "search.pl?if=gb",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "書名檢索",
+      "url": "searchbooks.pl?if=gb",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "相關資源",
+      "url": "resource.pl?node=47086&amp;if=gb",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "高級檢索",
+      "url": "search.pl?if=gb&amp;node=47086",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "Meaning of \"取\" in context",
+      "url": "discuss.pl?if=gb&amp;thread=8978869",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "Wrong character 莫--&gt;暮",
+      "url": "discuss.pl?if=gb&amp;thread=6493051",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "更多（共103個主題）",
+      "url": "discuss.pl?if=gb&amp;bookid=47086",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "臨邪天下",
+      "url": "discuss.pl?if=gb&amp;thread=5691826",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "關於道家發言或提問",
+      "url": "discuss.pl?if=gb&amp;bookid=47086",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "The Guodian Laozi: Proceedings of the International Conference, Dartmouth College, May 1998 (Early China Special Monograph Series, No. 5)",
+      "url": "resource.pl?if=gb&amp;res=299",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "Chuang-Tzu for Spiritual Transformation: An Analysis of the Inner Chapters",
+      "url": "resource.pl?if=gb&amp;res=340",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "更多（共72項資料）",
+      "url": "resource.pl?if=gb&amp;node=47086",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "Dao De Jing: A Philosophical Translation",
+      "url": "resource.pl?if=gb&amp;res=37",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "莊子口義",
+      "url": "library.pl?if=gb&amp;res=230",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "南華真經注疏",
+      "url": "library.pl?if=gb&amp;res=2519",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "更多（共75項資料）",
+      "url": "library.pl?if=gb&amp;node=47086",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "(c)版權2006-2026",
+      "url": "faq/zh#copyright",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "http://ctext.org/zh",
+      "url": "http://ctext.org/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "沪ICP备09015720号-3",
+      "url": "http://www.miibeian.gov.cn/",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "在此提出",
+      "url": "discuss.pl?if=gb&amp;board=7",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "Do not click this link",
+      "url": "https://ctext.org/hp.pl?src=h",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "本站介紹",
+      "url": "https://ctext.org/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "字體試驗頁",
+      "url": "font-test-page/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "常見問答集",
+      "url": "faq/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "使用說明",
+      "url": "instructions/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "系統統計",
+      "url": "system-statistics/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "數位人文",
+      "url": "digital-humanities/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "原典全文",
+      "url": "pre-qin-and-han/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "簡介說明",
+      "url": "notes/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "相關資料",
+      "url": "resource.pl?node=3925&amp;if=gb",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "數據維基",
+      "url": "datawiki.pl?if=gb",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "書名檢索",
+      "url": "searchbooks.pl?if=gb",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "正統道藏",
+      "url": "library.pl?if=gb&amp;collection=132",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "太上說輪轉五道宿命因緣經",
+      "url": "wiki.pl?if=gb&amp;res=729576",
+      "source": "ctext.org",
+      "category": "命理"
+    },
+    {
+      "title": "太上說輪轉五道宿命因緣經",
+      "url": "wiki.pl?if=gb&amp;res=259689",
+      "source": "ctext.org",
+      "category": "命理"
+    },
+    {
+      "title": "太上說輪轉五道宿命因緣經",
+      "url": "library.pl?if=gb&amp;file=99388&amp;page=1",
+      "source": "ctext.org",
+      "category": "命理"
+    },
+    {
+      "title": "(c)版權2006-2026",
+      "url": "faq/zh#copyright",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "http://ctext.org/zh",
+      "url": "http://ctext.org/zh",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "沪ICP备09015720号-3",
+      "url": "http://www.miibeian.gov.cn/",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "在此提出",
+      "url": "discuss.pl?if=gb&amp;board=7",
+      "source": "ctext.org",
+      "category": "道藏"
+    },
+    {
+      "title": "Do not click this link",
+      "url": "https://ctext.org/hp.pl?src=h",
+      "source": "ctext.org",
+      "category": "道藏"
+    }
+  ]
+}
