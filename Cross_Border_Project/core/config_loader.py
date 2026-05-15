@@ -15,10 +15,24 @@ _CONFIG_DIR = _PROJECT_ROOT / "config"
 
 # --- Pydantic config models ---
 
+class WooCommerceConfig(BaseModel):
+    site_url: str
+    consumer_key: str
+    consumer_secret: str
+    primary_currency: str = "USD"
+    weight_unit: str = "lb"
+
+
+class WordPressConfig(BaseModel):
+    site_url: str = ""
+    username: str = ""
+    app_password: str = ""
+
+
 class ShopifyConfig(BaseModel):
-    domain: str
+    domain: str = ""
     api_version: str = "2024-01"
-    access_token: str
+    access_token: str = ""
     location_id: int | None = None
     primary_currency: str = "USD"
     weight_unit: str = "lb"
@@ -27,6 +41,7 @@ class ShopifyConfig(BaseModel):
 class StoreInfoConfig(BaseModel):
     store_name: str = "Mystic Sanctuary"
     contact_email: str = "support@example.com"
+    whatsapp: str = ""
     social_links: dict[str, str] = Field(default_factory=dict)
 
 
@@ -92,7 +107,9 @@ class SkillsConfig(BaseModel):
 
 
 class AppConfig(BaseModel):
-    shopify: ShopifyConfig
+    woocommerce: WooCommerceConfig | None = None
+    wordpress: WordPressConfig | None = None
+    shopify: ShopifyConfig | None = None
     store_info: StoreInfoConfig = Field(default_factory=StoreInfoConfig)
     content_rules: ContentRulesConfig = Field(default_factory=ContentRulesConfig)
     skills: SkillsConfig = Field(default_factory=SkillsConfig)
@@ -165,7 +182,9 @@ def load_config(
 
     # Build merged config dict
     merged = {
-        "shopify": store_data.get("shopify", {}),
+        "woocommerce": store_data.get("woocommerce"),
+        "wordpress": store_data.get("wordpress"),
+        "shopify": store_data.get("shopify"),
         "store_info": store_data.get("store_info", {}),
         "content_rules": content_data,
         "skills": skills_data.get("skills", {}),

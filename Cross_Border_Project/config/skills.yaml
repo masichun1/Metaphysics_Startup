@@ -1,12 +1,53 @@
 skills:
+  # ==================== WordPress + WooCommerce Skills ====================
+  wp_skill_01_product_listing:
+    enabled: true
+    schedule: "0 2 * * *"
+    batch_size: 10
+
+  wp_skill_02_reviews:
+    enabled: false
+    schedule: "0 9 * * *"
+    reviews_per_product_min: 3
+    reviews_per_product_max: 7
+    daily_max_reviews: 10
+
+  wp_skill_03_blog:
+    enabled: true
+    schedule: "0 6 * * 1,3,5"
+    article_length_min: 1500
+    article_length_max: 3000
+
+  wp_skill_04_notifications:
+    enabled: true
+    abandoned_cart_check_interval_minutes: 15
+    coupon_discount_percentage: 10
+    sms_enabled: false
+
+  wp_skill_05_revenue:
+    enabled: true
+    daily_report_time: "08:00"
+    weekly_report_day: 1
+    default_cogs_margin: 0.40
+    output_destinations:
+      - csv
+      - slack
+
+  wp_skill_06_customization:
+    enabled: true
+    effects:
+      - product_card_glow
+      - particles_background
+      - countdown_timer
+      - woo_checkout_enhance
+      - newsletter_popup
+
+  # ==================== Legacy Shopify Skills ====================
   skill_01_product_listing:
     enabled: true
     schedule: "0 * * * *"
     batch_size: 5
     upsert_mode: true
-    image:
-      download_timeout_seconds: 30
-      max_image_dimensions: [2048, 2048]
 
   skill_02_product_reviews:
     enabled: false
@@ -14,13 +55,6 @@ skills:
     reviews_per_product_min: 3
     reviews_per_product_max: 7
     daily_max_reviews: 10
-    rating_distribution_target:
-      5: 0.50
-      4: 0.25
-      3: 0.15
-      2: 0.07
-      1: 0.03
-    compliance_reviewed: false
 
   skill_03_blog_content:
     enabled: true
@@ -29,7 +63,6 @@ skills:
     article_length_min: 1500
     article_length_max: 3000
     auto_publish: true
-    publish_time_utc: "14:00"
 
   skill_04_customer_notification:
     enabled: true

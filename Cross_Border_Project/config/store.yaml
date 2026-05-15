@@ -1,17 +1,20 @@
-shopify:
-  domain: "${SHOPIFY_STORE_DOMAIN}"
-  api_version: "${SHOPIFY_API_VERSION}"
-  access_token: "${SHOPIFY_ACCESS_TOKEN}"
-  location_id: null
+# WordPress + WooCommerce 配置
+woocommerce:
+  site_url: "${WP_SITE_URL}"
+  consumer_key: "${WC_CONSUMER_KEY}"
+  consumer_secret: "${WC_CONSUMER_SECRET}"
   primary_currency: "USD"
-  tax_configuration:
-    auto_collect: true
-    default_country: "US"
   weight_unit: "lb"
+
+wordpress:
+  site_url: "${WP_SITE_URL}"
+  username: "${WP_ADMIN_USER}"
+  app_password: "${WP_APP_PASSWORD}"
 
 store_info:
   store_name: "Mystic Sanctuary"
   contact_email: "support@mysticsanctuary.com"
+  whatsapp: "+86 17514046772"
   from_address:
     line1: "123 Spirit Way"
     city: "Sedona"
