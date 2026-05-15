@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>{% if post %}Edit{% else %}New{% endif %} Blog Post — Admin</title><style>
+body{font-family:'Inter',sans-serif;background:#faf9f6;color:#3d3d3d;margin:0}
+.main{max-width:800px;margin:0 auto;padding:32px}
+h1{font-family:'Cormorant Garamond',serif}
+.form-group{margin-bottom:16px}
+label{display:block;font-weight:600;font-size:14px;margin-bottom:4px;color:#1a0a2e}
+input,textarea,select{width:100%;padding:10px;border:1px solid #e0d5c1;border-radius:6px;font-family:inherit;font-size:14px}
+textarea{min-height:300px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn{padding:12px 28px;background:#1a0a2e;color:#fff;border:none;border-radius:6px;font-size:15px;cursor:pointer;font-weight:600}
+.btn-secondary{padding:12px 28px;background:transparent;color:#1a0a2e;border:1px solid #1a0a2e;border-radius:6px;text-decoration:none;font-size:15px}
+</style></head><body>
+<div class="main"><h1>{% if post %}Edit: {{ post.title[:50] }}{% else %}New Blog Post{% endif %}</h1>
+<form method="POST" style="margin-top:24px">
+<div class="form-group"><label>Slug *</label><input name="slug" value="{{ post.slug if post else '' }}" required placeholder="url-friendly-name"></div>
+<div class="form-group"><label>Title *</label><input name="title" value="{{ post.title if post else '' }}" required></div>
+<div class="row"><div class="form-group"><label>Category</label><input name="category" value="{{ post.category if post else '' }}"></div>
+<div class="form-group"><label>Date</label><input name="date" value="{{ post.date if post else '' }}"></div></div>
+<div class="row"><div class="form-group"><label>Read Time (min)</label><input name="read_time" type="number" value="{{ post.read_time if post else 5 }}"></div></div>
+<div class="form-group"><label>Excerpt</label><input name="excerpt" value="{{ post.excerpt if post else '' }}"></div>
+<div class="form-group"><label>Body (HTML)</label><textarea name="body_html">{{ post.body_html if post else '' }}</textarea></div>
+<div style="display:flex;gap:12px;margin-top:24px"><button type="submit" class="btn">Save Post</button><a href="/admin/blog" class="btn-secondary">Cancel</a></div>
+</form></div></body></html>

@@ -1,0 +1,29 @@
+# Secrets
+.env
+config/proxy_pool.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+*.egg
+
+# Runtime data
+data/logs/
+data/cache/cookies.json
+data/cache/*.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmation</title>
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; color: #3d3d3d; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; background: #faf9f6; }
+  .header { text-align: center; padding: 20px 0; border-bottom: 2px solid #c9a96e; }
+  .header h1 { color: #6b4e7e; font-size: 24px; }
+  .content { padding: 20px 0; }
+  .items { border: 1px solid #e0d5c1; border-radius: 4px; overflow: hidden; }
+  .item { padding: 12px 16px; border-bottom: 1px solid #e0d5c1; }
+  .item:last-child { border-bottom: none; }
+  .total { text-align: right; padding: 16px; font-size: 18px; font-weight: bold; color: #6b4e7e; }
+  .footer { text-align: center; padding: 20px 0; border-top: 1px solid #e0d5c1; font-size: 13px; color: #999; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Thank You for Your Order, {{ first_name }}!</h1>
+  <p>Your spiritual tools are on the way.</p>
+</div>
+<div class="content">
+  <p>We're honored that you've chosen Mystic Sanctuary. Your order <strong>#{{ order_number }}</strong> has been confirmed and we're preparing it with care.</p>
+  <div class="items">
+    {% for item in line_items %}
+    <div class="item">
+      <strong>{{ item.title }}</strong> &times; {{ item.quantity }} — ${{ item.price }}
+    </div>
+    {% endfor %}
+    <div class="total">Total: ${{ total_price }} {{ currency }}</div>
+  </div>
+  <p>You'll receive a shipping confirmation with tracking information once your order leaves our sanctuary.</p>
+  <p style="text-align: center; margin: 30px 0;">
+    <span style="font-size: 36px;">&#10024;</span><br>
+    <em>May these tools bring light to your journey.</em>
+  </p>
+</div>
+<div class="footer">
+  <p>Mystic Sanctuary | mystic-sanctuary.com</p>
+  <p>Questions? Reply to this email or visit our <a href="https://{{ store_domain }}/pages/contact">Contact page</a>.</p>
+</div>
+</body>
+</html>

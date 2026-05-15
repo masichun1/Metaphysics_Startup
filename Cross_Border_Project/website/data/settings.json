@@ -1,0 +1,21 @@
+{
+  "store_name": "Mystic Sanctuary",
+  "tagline": "Where Spirituality Meets Everyday Life",
+  "contact_email": "support@mysticsanctuary.com",
+  "currency": "USD",
+  "shipping": {
+    "free_threshold": 75,
+    "standard_rate": 5.99,
+    "express_rate": 14.99
+  },
+  "social": {
+    "instagram": "https://instagram.com/mysticsanctuary",
+    "facebook": "https://facebook.com/mysticsanctuary",
+    "pinterest": "https://pinterest.com/mysticsanctuary",
+    "youtube": "https://youtube.com/mysticsanctuary"
+  },
+  "seo": {
+    "title": "Mystic Sanctuary — Crystals, Tarot, Feng Shui & Spiritual Tools",
+    "description": "Discover hand-selected crystals, tarot decks, feng shui decor, and spiritual tools. Your journey to inner peace starts here. Free shipping on orders over $75."
+  }
+}

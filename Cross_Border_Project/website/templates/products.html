@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Shop — {{ settings.store_name }}{% if category %}: {{ category }}{% endif %}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>{% if category %}{{ category }}{% else %}Our Collection{% endif %}</h1>
+        <p>{{ products|length }} sacred items crafted with reverence for tradition</p>
+    </div>
+</section>
+
+<section class="products-section">
+    <div class="container">
+        <!-- Category Filters -->
+        <div class="category-filters">
+            <a href="/products" class="{% if not category %}active{% endif %}">All</a>
+            <a href="/products?category=Taoist+Woodcraft" class="{% if category == 'Taoist Woodcraft' %}active{% endif %}">Thunderstruck Wood</a>
+            <a href="/products?category=Taoist+Sachets" class="{% if category == 'Taoist Sachets' %}active{% endif %}">Herbal Sachets</a>
+            <a href="/products?category=Talismans+and+Fu" class="{% if category == 'Talismans and Fu' %}active{% endif %}">Talismans & Fu</a>
+            <a href="/products?category=Blessed+Jewelry" class="{% if category == 'Blessed Jewelry' %}active{% endif %}">Blessed Jewelry</a>
+            <a href="/products?category=Ritual+Tools" class="{% if category == 'Ritual Tools' %}active{% endif %}">Ritual Tools</a>
+            <a href="/products?category=Feng+Shui+Tools" class="{% if category == 'Feng Shui Tools' %}active{% endif %}">Feng Shui</a>
+        </div>
+
+        {% if products %}
+        <div class="product-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <a href="/product/{{ product.sku }}" class="product-image-link">
+                    <div class="product-image" style="background: linear-gradient(135deg, #2d1b4e, #1a0a2e); display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border-radius: 8px;">
+                        <span style="font-size: 48px;">{% if 'Wood' in product.category %}&#127795;{% elif 'Sachet' in product.category %}&#127807;{% elif 'Talisman' in product.category %}&#9998;{% elif 'Jewelry' in product.category %}&#128142;{% elif 'Ritual' in product.category %}&#127760;{% elif 'Feng Shui' in product.category %}&#127808;{% else %}&#10024;{% endif %}</span>
+                    </div>
+                </a>
+                <div class="product-info">
+                    <span class="product-category">{{ product.category }}</span>
+                    <h3><a href="/product/{{ product.sku }}">{{ product.title[:55] }}{% if product.title|length > 55 %}...{% endif %}</a></h3>
+                    <div class="product-price">
+                        {% if product.private_order %}
+                        <span class="price" style="color:#c9a96e;">Private Order</span>
+                        {% else %}
+                        <span class="price">${{ "%.2f"|format(product.price) }}</span>
+                        {% if product.compare_at_price and product.compare_at_price > product.price %}
+                        <span class="compare-at">${{ "%.2f"|format(product.compare_at_price) }}</span>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                    {% if product.private_order %}
+                    <a href="/contact?product={{ product.sku }}" class="btn btn-outline btn-sm" style="color:#25D366;border-color:#25D366;">Inquire</a>
+                    {% else %}
+                    <button class="btn btn-primary btn-sm add-to-cart" data-sku="{{ product.sku }}" data-title="{{ product.title }}" data-price="{{ product.price }}">Add to Cart</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>No products found in this category.</p>
+            <a href="/products" class="btn btn-outline">View All Products</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

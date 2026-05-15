@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Products — Admin</title><style>
+body{font-family:'Inter',sans-serif;background:#faf9f6;color:#3d3d3d;margin:0}
+.sidebar{background:#1a0a2e;color:#fff;width:220px;position:fixed;top:0;left:0;bottom:0;padding:24px}
+.sidebar h2{font-family:'Cormorant Garamond',serif;color:#c9a96e;margin-bottom:24px}
+.sidebar a{display:block;color:#b396c4;padding:10px 0;text-decoration:none;font-size:14px;border-bottom:1px solid rgba(201,169,110,0.1)}
+.sidebar a:hover,.sidebar a.active{color:#c9a96e}
+.main{margin-left:220px;padding:32px}
+h1{font-family:'Cormorant Garamond',serif}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}
+th,td{padding:12px 16px;text-align:left;font-size:14px;border-bottom:1px solid #e0d5c1}
+th{background:#1a0a2e;color:#fff;font-weight:600}
+tr:hover{background:#fdfbf7}
+.btn{display:inline-block;padding:8px 16px;background:#1a0a2e;color:#fff;text-decoration:none;border-radius:4px;font-size:13px;margin:2px}
+.btn-outline{background:transparent;color:#1a0a2e;border:1px solid #1a0a2e}
+.btn-danger{background:#c0392b}
+.logout{position:absolute;bottom:20px;color:#e74c3c}
+.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+</style></head><body>
+<div class="sidebar"><h2>Admin Panel</h2>
+<a href="/admin">Dashboard</a>
+<a href="/admin/products" class="active">Products</a>
+<a href="/admin/orders">Orders</a>
+<a href="/admin/blog">Blog</a>
+<a href="/" target="_blank">View Site &rarr;</a>
+<a href="/admin/logout" class="logout">Logout</a>
+</div>
+<div class="main">
+<div class="top-bar"><h1>Products ({{ products|length }})</h1><a href="/admin/products/new" class="btn">+ New Product</a></div>
+<table><thead><tr><th>SKU</th><th>Title</th><th>Category</th><th>Price</th><th>Inventory</th><th>Actions</th></tr></thead><tbody>
+{% for p in products %}
+<tr><td>{{ p.sku }}</td><td>{{ p.title[:50] }}</td><td>{{ p.category }}</td><td>${{ "%.2f"|format(p.price) }}</td><td>{{ p.inventory }}</td>
+<td><a href="/admin/products/{{ p.sku }}/edit" class="btn btn-outline">Edit</a>
+<form method="POST" action="/admin/products/{{ p.sku }}/delete" style="display:inline" onsubmit="return confirm('Delete {{ p.sku }}?')"><button class="btn btn-danger" style="border:none;cursor:pointer">Delete</button></form></td></tr>
+{% endfor %}
+</tbody></table></div></body></html>

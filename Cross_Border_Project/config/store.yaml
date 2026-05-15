@@ -1,0 +1,24 @@
+shopify:
+  domain: "${SHOPIFY_STORE_DOMAIN}"
+  api_version: "${SHOPIFY_API_VERSION}"
+  access_token: "${SHOPIFY_ACCESS_TOKEN}"
+  location_id: null
+  primary_currency: "USD"
+  tax_configuration:
+    auto_collect: true
+    default_country: "US"
+  weight_unit: "lb"
+
+store_info:
+  store_name: "Mystic Sanctuary"
+  contact_email: "support@mysticsanctuary.com"
+  from_address:
+    line1: "123 Spirit Way"
+    city: "Sedona"
+    state: "AZ"
+    zip: "86336"
+    country: "US"
+  social_links:
+    instagram: "https://instagram.com/mysticsanctuary"
+    facebook: "https://facebook.com/mysticsanctuary"
+    pinterest: "https://pinterest.com/mysticsanctuary"

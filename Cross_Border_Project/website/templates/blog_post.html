@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} — {{ settings.store_name }}{% endblock %}
+
+{% block content %}
+<article class="blog-post-detail">
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; <span>{{ post.title[:50] }}</span>
+        </nav>
+        <div class="blog-post-header">
+            <span class="blog-category">{{ post.category }}</span>
+            <h1>{{ post.title }}</h1>
+            <div class="blog-meta">
+                <span>{{ post.date }}</span>
+                <span>{{ post.read_time }} min read</span>
+            </div>
+        </div>
+        <div class="blog-post-body">
+            {{ post.body_html | safe }}
+        </div>
+        <div class="blog-post-footer">
+            <p>Share this article:</p>
+            <div class="share-buttons">
+                <span>Share on X</span> &middot; <span>Share on Facebook</span> &middot; <span>Copy Link</span>
+            </div>
+        </div>
+    </div>
+</article>
+{% endblock %}

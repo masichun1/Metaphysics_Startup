@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Blog — {{ settings.store_name }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>The Mystic Sanctuary Blog</h1>
+        <p>Wisdom, rituals, and insights from the Taoist tradition</p>
+    </div>
+</section>
+
+<section class="blog-content">
+    <div class="container">
+        {% if posts %}
+        <div class="blog-grid">
+            {% for post in posts %}
+            <article class="blog-card">
+                <div class="blog-card-image" style="background: linear-gradient(135deg, #2d1b4e, #1a0a2e); aspect-ratio: 16/9; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    <span style="font-size: 48px;">&#128214;</span>
+                </div>
+                <span class="blog-category">{{ post.category }}</span>
+                <h3><a href="/blog/{{ post.slug }}">{{ post.title }}</a></h3>
+                <p class="blog-excerpt">{{ post.excerpt[:150] }}{% if post.excerpt|length > 150 %}...{% endif %}</p>
+                <div class="blog-meta">
+                    <span>{{ post.date }}</span>
+                    <span>{{ post.read_time }} min read</span>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>Blog posts coming soon. Subscribe to our newsletter for updates.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

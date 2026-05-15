@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ settings.seo.description }}">
+    <title>{% block title %}{{ settings.seo.title }}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        Free shipping on orders over $75 | Worldwide delivery available
+    </div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">{{ settings.store_name }}</a>
+            <nav class="main-nav">
+                <a href="/">Home</a>
+                <a href="/products">Shop</a>
+                <a href="/products?category=Taoist+Woodcraft">Woodcraft</a>
+                <a href="/products?category=Taoist+Sachets">Sachets</a>
+                <a href="/products?category=Talismans+and+Fu">Talismans</a>
+                <a href="/blog">Blog</a>
+                <a href="/about">About</a>
+            </nav>
+            <div class="header-actions">
+                <a href="/cart" class="cart-icon" id="cart-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>{{ settings.store_name }}</h4>
+                    <p>Authentic Taoist tools, talismans, and spiritual guidance for your sacred journey.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <a href="/products?category=Taoist+Woodcraft">Thunderstruck Wood</a>
+                    <a href="/products?category=Taoist+Sachets">Herbal Sachets</a>
+                    <a href="/products?category=Talismans+and+Fu">Talismans & Fu</a>
+                    <a href="/products?category=Blessed+Jewelry">Blessed Jewelry</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <a href="/about#services">Ritual Services</a>
+                    <a href="/about#services">Ba Zi Consultation</a>
+                    <a href="/about#services">House Cleansing</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <a href="/contact">Contact Us</a>
+                    <a href="https://wa.me/8617514046772" target="_blank" style="color:#25D366;">WhatsApp: +86 17514046772</a>
+                    <a href="/blog">Blog</a>
+                    <a href="{{ settings.social.instagram }}" target="_blank">Instagram</a>
+                    <p>{{ settings.contact_email }}</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 {{ settings.store_name }}. All rights reserved.</p>
+                <p class="disclaimer">* Spiritual tools and talismans are for personal practice and should complement, not replace, professional advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/js/cart.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

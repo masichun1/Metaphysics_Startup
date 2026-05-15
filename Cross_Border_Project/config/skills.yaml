@@ -1,0 +1,59 @@
+skills:
+  skill_01_product_listing:
+    enabled: true
+    schedule: "0 * * * *"
+    batch_size: 5
+    upsert_mode: true
+    image:
+      download_timeout_seconds: 30
+      max_image_dimensions: [2048, 2048]
+
+  skill_02_product_reviews:
+    enabled: false
+    schedule: "0 9 * * *"
+    reviews_per_product_min: 3
+    reviews_per_product_max: 7
+    daily_max_reviews: 10
+    rating_distribution_target:
+      5: 0.50
+      4: 0.25
+      3: 0.15
+      2: 0.07
+      1: 0.03
+    compliance_reviewed: false
+
+  skill_03_blog_content:
+    enabled: true
+    schedule: "0 6 * * 1,3,5"
+    default_blog_handle: "news"
+    article_length_min: 1500
+    article_length_max: 3000
+    auto_publish: true
+    publish_time_utc: "14:00"
+
+  skill_04_customer_notification:
+    enabled: true
+    abandoned_cart_check_interval_minutes: 15
+    abandoned_cart_sequence:
+      - delay_hours: 1
+        template: "abandoned_cart_1"
+        include_discount: false
+      - delay_hours: 24
+        template: "abandoned_cart_2"
+        include_discount: false
+      - delay_hours: 72
+        template: "abandoned_cart_3"
+        include_discount: true
+        discount_percentage: 10
+        discount_validity_hours: 48
+    sms_enabled: false
+
+  skill_05_revenue_calculation:
+    enabled: true
+    daily_report_time: "08:00"
+    weekly_report_day: 1
+    weekly_report_time: "09:00"
+    default_cogs_margin: 0.40
+    output_destinations:
+      - csv
+      - slack

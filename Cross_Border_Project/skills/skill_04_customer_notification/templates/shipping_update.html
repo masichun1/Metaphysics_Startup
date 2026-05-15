@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Order Has Shipped</title>
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; color: #3d3d3d; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 20px; background: #faf9f6; }
+  .header { text-align: center; padding: 20px 0; border-bottom: 2px solid #c9a96e; }
+  .header h1 { color: #6b4e7e; font-size: 24px; }
+  .tracking { background: #f3edf7; border-radius: 8px; padding: 16px; text-align: center; margin: 20px 0; }
+  .tracking-link { font-size: 16px; color: #6b4e7e; }
+  .items { border: 1px solid #e0d5c1; border-radius: 4px; }
+  .item { padding: 12px 16px; border-bottom: 1px solid #e0d5c1; }
+  .footer { text-align: center; padding: 20px 0; border-top: 1px solid #e0d5c1; font-size: 13px; color: #999; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Your Magic Is on the Move, {{ first_name }}!</h1>
+  <p>Order #{{ order_number }} has been shipped.</p>
+</div>
+<div class="content">
+  <p>We've carefully packaged your order and sent it on its way.</p>
+  {% if tracking_number %}
+  <div class="tracking">
+    <p><strong>Tracking Number:</strong></p>
+    <p class="tracking-link">{{ tracking_number }}</p>
+    <p><a href="{{ tracking_url }}">Track your package</a></p>
+  </div>
+  {% endif %}
+  <div class="items">
+    {% for item in line_items %}
+    <div class="item">
+      <strong>{{ item.title }}</strong> &times; {{ item.quantity }}
+    </div>
+    {% endfor %}
+  </div>
+  <p>Estimated delivery: <strong>{{ estimated_delivery }}</strong></p>
+  <p style="text-align: center; margin: 30px 0;">
+    <span style="font-size: 36px;">&#128640;</span><br>
+    <em>Your spiritual journey continues...</em>
+  </p>
+</div>
+<div class="footer">
+  <p>Mystic Sanctuary | mystic-sanctuary.com</p>
+  <p>Questions about your order? Just reply to this email.</p>
+</div>
+</body>
+</html>

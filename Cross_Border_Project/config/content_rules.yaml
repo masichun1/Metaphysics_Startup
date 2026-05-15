@@ -1,0 +1,28 @@
+brand_voice:
+  tone: "warm, knowledgeable, accessible, gently authoritative"
+  reading_level: "9th-10th grade"
+  target_audience:
+    demographics: "Women aged 40-65, primarily Western (US/UK/Canada/Australia/New Zealand)"
+    interests: "spirituality, astrology, tarot, feng shui, crystal healing, meditation, self-discovery"
+    education: "varies; some are beginners exploring spirituality, others are experienced practitioners"
+  language_rules:
+    - "Always use American English spelling (color not colour, center not centre)"
+    - "Avoid overly academic or new-age jargon without explanation"
+    - "Use inclusive second-person ('you') to create personal connection"
+    - "Include gentle calls-to-action (browse our collection, learn more, explore)"
+  forbidden:
+    - "Do not make medical claims about products (crystals do not 'cure' or 'treat')"
+    - "Do not disparage other belief systems or religions"
+    - "Do not use fear-based language or scarcity tactics"
+    - "Do not use ALL CAPS or excessive exclamation marks"
+
+ai_defaults:
+  product_descriptions:
+    temperature: 0.7
+    max_tokens: 1024
+  reviews:
+    temperature: 0.9
+    max_tokens: 2048
+  blog_articles:
+    temperature: 0.8
+    max_tokens: 4096

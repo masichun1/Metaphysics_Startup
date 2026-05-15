@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}Checkout — {{ settings.store_name }}{% endblock %}
+
+{% block content %}
+<section class="checkout-content">
+    <div class="container">
+        <h1>Checkout</h1>
+        <div id="checkout-empty" class="empty-cart" style="display:none">
+            <p style="font-size:48px;">&#128722;</p>
+            <h2>Your cart is empty</h2>
+            <p>Add items from our collection before checking out.</p>
+            <a href="/products" class="btn btn-primary">Browse Products</a>
+        </div>
+
+        <div id="checkout-form-container">
+        <div class="checkout-grid">
+            <div class="checkout-form-wrap">
+                <h2>Shipping Information</h2>
+                <form id="checkout-form">
+                    <div class="form-row">
+                        <div class="form-group"><label>First Name *</label><input type="text" id="first_name" required></div>
+                        <div class="form-group"><label>Last Name *</label><input type="text" id="last_name" required></div>
+                    </div>
+                    <div class="form-group"><label>Email *</label><input type="email" id="checkout_email" required></div>
+                    <div class="form-group"><label>Address *</label><input type="text" id="address" required></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>City *</label><input type="text" id="city" required></div>
+                        <div class="form-group"><label>State / Province *</label><input type="text" id="state" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>ZIP / Postal Code *</label><input type="text" id="zip" required></div>
+                        <div class="form-group"><label>Country *</label><select id="country"><option>United States</option><option>Canada</option><option>United Kingdom</option><option>Australia</option><option>New Zealand</option><option>Singapore</option><option>Other</option></select></div>
+                    </div>
+                </form>
+            </div>
+            <div class="checkout-summary">
+                <h2>Order Summary</h2>
+                <div id="checkout-items"></div>
+                <div class="summary-line"><span>Subtotal</span><span id="co-subtotal">$0.00</span></div>
+                <div class="summary-line"><span>Shipping</span><span id="co-shipping">Calculated</span></div>
+                <div class="summary-line total"><span>Total</span><span id="co-total">$0.00</span></div>
+                <button class="btn btn-primary btn-lg btn-full" id="place-order-btn" onclick="placeOrder()">Place Order</button>
+                <p style="font-size:12px;color:#6b6b6b;margin-top:8px;text-align:center;">Payment instructions will be sent via email after order review.</p>
+            </div>
+        </div>
+        </div>
+
+        <!-- Success Message (hidden by default) -->
+        <div id="checkout-success" style="display:none;text-align:center;padding:60px 20px;">
+            <p style="font-size:64px;">&#10003;</p>
+            <h2 style="color:#27ae60;">Order Placed Successfully!</h2>
+            <p>Your order <strong id="order-id-display"></strong> has been received.</p>
+            <p>We will send payment instructions and shipping details to your email within 24 hours.</p>
+            <p style="margin-top:8px;color:#6b6b6b;">Questions? WhatsApp: <strong>+86 17514046772</strong></p>
+            <a href="/products" class="btn btn-primary" style="margin-top:20px;">Continue Shopping</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+var cart = JSON.parse(localStorage.getItem('mystic_cart') || '[]');
+if (cart.length === 0) {
+    document.getElementById('checkout-form-container').style.display = 'none';
+    document.getElementById('checkout-empty').style.display = 'block';
+}
+
+var subtotal = cart.reduce(function(sum, item) { return sum + item.price; }, 0);
+document.getElementById('co-subtotal').textContent = '$' + subtotal.toFixed(2);
+var shipping = subtotal >= 75 ? 0 : 5.99;
+document.getElementById('co-shipping').textContent = subtotal >= 75 ? 'Free' : ('$' + shipping.toFixed(2));
+var total = subtotal + shipping;
+document.getElementById('co-total').textContent = '$' + total.toFixed(2);
+
+var itemsDiv = document.getElementById('checkout-items');
+var counts = {};
+cart.forEach(function(item) {
+    if (!counts[item.sku]) counts[item.sku] = {item: item, qty: 0};
+    counts[item.sku].qty += 1;
+});
+var itemsHtml = '';
+for (var sku in counts) {
+    var e = counts[sku];
+    itemsHtml += '<div class="checkout-item"><span>' + e.item.title.substring(0,40) + ' x' + e.qty + '</span><span>$' + (e.item.price * e.qty).toFixed(2) + '</span></div>';
+}
+itemsDiv.innerHTML = itemsHtml || '<p>No items in cart.</p>';
+
+function placeOrder() {
+    var fields = ['first_name','last_name','checkout_email','address','city','state','zip'];
+    for (var i = 0; i < fields.length; i++) {
+        var el = document.getElementById(fields[i]);
+        if (!el.value.trim()) { alert('Please fill in all required fields.'); el.focus(); return; }
+    }
+
+    var btn = document.getElementById('place-order-btn');
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+
+    var orderData = {
+        first_name: document.getElementById('first_name').value,
+        last_name: document.getElementById('last_name').value,
+        email: document.getElementById('checkout_email').value,
+        address: document.getElementById('address').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        zip: document.getElementById('zip').value,
+        country: document.getElementById('country').value,
+        items: cart,
+        subtotal: subtotal,
+        shipping: shipping,
+        total: total
+    };
+
+    fetch('/checkout/submit', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(orderData)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.success) {
+            document.getElementById('checkout-form-container').style.display = 'none';
+            document.getElementById('checkout-success').style.display = 'block';
+            document.getElementById('order-id-display').textContent = '#' + data.order_id;
+            document.getElementById('cart-count').textContent = '0';
+            document.getElementById('cart-count').style.display = 'none';
+            localStorage.removeItem('mystic_cart');
+        } else {
+            alert('Order failed. Please try again or contact us via WhatsApp: +86 17514046772');
+            btn.textContent = 'Place Order';
+            btn.disabled = false;
+        }
+    })
+    .catch(function() {
+        alert('Network error. Please try again or contact us via WhatsApp: +86 17514046772');
+        btn.textContent = 'Place Order';
+        btn.disabled = false;
+    });
+}
+</script>
+{% endblock %}

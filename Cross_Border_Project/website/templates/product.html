@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}{{ product.title }} — {{ settings.store_name }}{% endblock %}
+
+{% block content %}
+<section class="product-detail">
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="/">Home</a> &rsaquo;
+            <a href="/products">Shop</a> &rsaquo;
+            <a href="/products?category={{ product.category | urlencode }}">{{ product.category }}</a> &rsaquo;
+            <span>{{ product.title[:50] }}</span>
+        </nav>
+
+        <div class="product-detail-grid">
+            <!-- Product Image -->
+            <div class="product-detail-image">
+                <div style="background: linear-gradient(135deg, #2d1b4e, #1a0a2e); aspect-ratio: 1; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 120px;">{% if 'Wood' in product.category %}&#127795;{% elif 'Sachet' in product.category %}&#127807;{% elif 'Talisman' in product.category %}&#9998;{% elif 'Jewelry' in product.category %}&#128142;{% elif 'Ritual' in product.category %}&#127760;{% elif 'Feng Shui' in product.category %}&#127808;{% else %}&#10024;{% endif %}</span>
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-detail-info">
+                <span class="product-category">{{ product.category }}</span>
+                <h1>{{ product.title }}</h1>
+                {% if product.private_order %}
+                <div class="product-price-detail">
+                    <span class="price" style="color:#c9a96e;">Private Custom Order</span>
+                </div>
+                <div class="product-description">
+                    {{ product.body_html | safe }}
+                </div>
+                <div class="product-meta">
+                    <p><strong>SKU:</strong> {{ product.sku }}</p>
+                    <p><strong>Category:</strong> {{ product.category }}</p>
+                    <p><strong>Tags:</strong> {{ product.tags | join(', ') }}</p>
+                </div>
+                <div class="product-actions">
+                    <a href="/contact?product={{ product.sku }}" class="btn btn-primary btn-lg" style="background:#25D366;border-color:#25D366;display:flex;align-items:center;gap:8px;justify-content:center;">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Inquire via WhatsApp
+                    </a>
+                    <p style="text-align:center;margin-top:8px;color:#6b6b6b;font-size:14px;">WhatsApp: +86 17514046772</p>
+                </div>
+                {% else %}
+                <div class="product-price-detail">
+                    <span class="price">${{ "%.2f"|format(product.price) }}</span>
+                    {% if product.compare_at_price and product.compare_at_price > product.price %}
+                    <span class="compare-at">${{ "%.2f"|format(product.compare_at_price) }}</span>
+                    <span class="sale-badge">Sale</span>
+                    {% endif %}
+                </div>
+                <div class="product-description">
+                    {{ product.body_html | safe }}
+                </div>
+                <div class="product-meta">
+                    <p><strong>SKU:</strong> {{ product.sku }}</p>
+                    <p><strong>Category:</strong> {{ product.category }}</p>
+                    <p><strong>Tags:</strong> {{ product.tags | join(', ') }}</p>
+                    {% if product.inventory and product.inventory < 20 %}
+                    <p class="low-stock">Only {{ product.inventory }} left in stock</p>
+                    {% endif %}
+                </div>
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="qty-btn" id="qty-minus">-</button>
+                        <input type="number" id="qty" value="1" min="1" max="{{ product.inventory }}" readonly>
+                        <button class="qty-btn" id="qty-plus">+</button>
+                    </div>
+                    <button class="btn btn-primary btn-lg add-to-cart" data-sku="{{ product.sku }}" data-title="{{ product.title }}" data-price="{{ product.price }}" id="add-to-cart-btn">Add to Cart — ${{ "%.2f"|format(product.price) }}</button>
+                </div>
+                {% endif %}
+
+                <div class="product-guarantees">
+                    <div class="guarantee-item">&#10003; Hand-selected & authentic</div>
+                    <div class="guarantee-item">&#10003; Free shipping over $75</div>
+                    <div class="guarantee-item">&#10003; Ritually consecrated</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        {% if related %}
+        <div class="related-products">
+            <h2>You May Also Like</h2>
+            <div class="product-grid">
+                {% for rp in related[:4] %}
+                <div class="product-card">
+                    <a href="/product/{{ rp.sku }}" class="product-image-link">
+                        <div class="product-image" style="background: linear-gradient(135deg, #2d1b4e, #1a0a2e); display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border-radius: 8px;">
+                            <span style="font-size: 36px;">{% if 'Wood' in rp.category %}&#127795;{% elif 'Sachet' in rp.category %}&#127807;{% elif 'Talisman' in rp.category %}&#9998;{% elif 'Jewelry' in rp.category %}&#128142;{% elif 'Ritual' in rp.category %}&#127760;{% elif 'Feng Shui' in rp.category %}&#127808;{% else %}&#10024;{% endif %}</span>
+                        </div>
+                    </a>
+                    <div class="product-info">
+                        <h3><a href="/product/{{ rp.sku }}">{{ rp.title[:45] }}{% if rp.title|length > 45 %}...{% endif %}</a></h3>
+                        <div class="product-price"><span class="price">${{ "%.2f"|format(rp.price) }}</span></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{% if not product.private_order %}
+<script>
+document.getElementById('qty-minus').addEventListener('click', function() {
+    var qty = document.getElementById('qty');
+    if (parseInt(qty.value) > 1) qty.value = parseInt(qty.value) - 1;
+});
+document.getElementById('qty-plus').addEventListener('click', function() {
+    var qty = document.getElementById('qty');
+    qty.value = parseInt(qty.value) + 1;
+});
+document.getElementById('add-to-cart-btn').addEventListener('click', function() {
+    var sku = this.getAttribute('data-sku');
+    var title = this.getAttribute('data-title');
+    var price = this.getAttribute('data-price');
+    var qty = parseInt(document.getElementById('qty').value);
+    for (var i = 0; i < qty; i++) {
+        addToCart({sku: sku, title: title, price: parseFloat(price)});
+    }
+});
+</script>
+{% endif %}
+{% endblock %}

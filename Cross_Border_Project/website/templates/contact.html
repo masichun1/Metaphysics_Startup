@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Contact — {{ settings.store_name }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p>We would be honored to assist you on your spiritual journey</p>
+    </div>
+</section>
+
+<section class="contact-content">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-form-wrap">
+                <h2>Send a Message</h2>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="interest">I'm interested in</label>
+                        <select id="interest">
+                            <option>Products — Thunderstruck Wood</option>
+                            <option>Products — Herbal Sachets</option>
+                            <option>Products — Talismans & Fu</option>
+                            <option>Products — Blessed Jewelry</option>
+                            <option>Products — Feng Shui Tools</option>
+                            <option>Services — Blessing / Consecration</option>
+                            <option>Services — House Cleansing</option>
+                            <option>Services — Ba Zi Consultation</option>
+                            <option>Custom Talisman Request</option>
+                            <option>Wholesale / Bulk Order</option>
+                            <option>General Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+            <div class="contact-info-sidebar">
+                <h2>Get in Touch</h2>
+                <div class="contact-info-item" style="background:#e8f5e9;padding:16px;border-radius:8px;border:1px solid #c8e6c9;">
+                    <h4 style="color:#25D366;">WhatsApp</h4>
+                    <p style="font-size:1.2rem;font-weight:700;">+86 17514046772</p>
+                    <a href="https://wa.me/8617514046772" target="_blank" class="btn btn-primary btn-sm" style="margin-top:8px;background:#25D366;border-color:#25D366;">Chat on WhatsApp</a>
+                    <p style="font-size:12px;color:#6b6b6b;margin-top:4px;">Fastest response — we typically reply within 2 hours during business hours</p>
+                </div>
+                <div class="contact-info-item">
+                    <h4>Email</h4>
+                    <p>{{ settings.contact_email }}</p>
+                </div>
+                <div class="contact-info-item">
+                    <h4>Response Time</h4>
+                    <p>We typically respond within 24-48 hours. For ritual service inquiries, please allow additional time for chart review.</p>
+                </div>
+                <div class="contact-info-item">
+                    <h4>Custom Requests</h4>
+                    <p>We welcome custom talisman requests and personalized ritual services. Please provide as much detail as possible in your message, including your date and time of birth for Ba Zi consultations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

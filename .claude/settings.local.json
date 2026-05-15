@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -X POST http://127.0.0.1:5000/admin/login -d \"password=mystic2026\" -c /tmp/cookies2.txt -w \"\\\\nHTTP:%{http_code}\")",
+      "Bash(curl -s -b /tmp/cookies2.txt http://127.0.0.1:5000/admin)",
+      "Bash(.venv/Scripts/python.exe -c ' *)",
+      "Bash(curl -s http://127.0.0.1:5000/contact)",
+      "Bash(curl -s http://127.0.0.1:5000/about)",
+      "Bash(curl -s -X POST http://127.0.0.1:5000/checkout/submit -H \"Content-Type: application/json\" -d '{\"first_name\":\"Test\",\"last_name\":\"User\",\"email\":\"test@test.com\",\"address\":\"123 Main St\",\"city\":\"NYC\",\"state\":\"NY\",\"zip\":\"10001\",\"country\":\"US\",\"items\":[{\"sku\":\"CRY-001\",\"title\":\"Test Bracelet\",\"price\":44.99,\"quantity\":1}],\"subtotal\":44.99,\"shipping\":5.99,\"total\":50.98}')",
+      "Bash(powershell.exe -NoProfile -Command \"winget install Git.Git --accept-package-agreements --accept-source-agreements 2>&1\")",
+      "Bash(git --version)",
+      "Bash(where git *)",
+      "Bash(git config *)"
+    ]
+  }
+}

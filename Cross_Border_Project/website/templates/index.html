@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}{{ settings.store_name }} — {{ settings.tagline }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Welcome to {{ settings.store_name }}</h1>
+        <p class="hero-subtitle">{{ settings.tagline }}</p>
+        <p class="hero-description">Discover authentic Taoist tools, hand-drawn talismans, consecrated crystals, and herbal remedies — each crafted with reverence for ancient traditions and mindfulness for modern life.</p>
+        <div class="hero-cta">
+            <a href="/products" class="btn btn-primary">Explore Our Collection</a>
+            <a href="/about#services" class="btn btn-outline">View Services</a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Categories -->
+<section class="featured-categories">
+    <div class="container">
+        <h2>Sacred Collections</h2>
+        <div class="category-grid">
+            <a href="/products?category=Taoist+Woodcraft" class="category-card">
+                <div class="category-icon">&#127795;</div>
+                <h3>Thunderstruck Wood</h3>
+                <p>Jujube wood struck by lightning — nature's most powerful talismanic material</p>
+            </a>
+            <a href="/products?category=Taoist+Sachets" class="category-card">
+                <div class="category-icon">&#127807;</div>
+                <h3>Herbal Sachets</h3>
+                <p>Taoist secret formulas with 20+ traditional herbs for protection and healing</p>
+            </a>
+            <a href="/products?category=Talismans+and+Fu" class="category-card">
+                <div class="category-icon">&#9998;</div>
+                <h3>Talismans & Fu</h3>
+                <p>Hand-drawn, ritually consecrated talismans for every aspect of life</p>
+            </a>
+            <a href="/products?category=Blessed+Jewelry" class="category-card">
+                <div class="category-icon">&#128142;</div>
+                <h3>Blessed Jewelry</h3>
+                <p>Consecrated bracelets and accessories charged with protective energy</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section class="featured-products">
+    <div class="container">
+        <h2>Featured Products</h2>
+        <div class="product-grid">
+            {% for product in products[:6] %}
+            <div class="product-card">
+                <a href="/product/{{ product.sku }}" class="product-image-link">
+                    <div class="product-image" style="background: linear-gradient(135deg, #2d1b4e, #1a0a2e); display: flex; align-items: center; justify-content: center; aspect-ratio: 1; border-radius: 8px;">
+                        <span style="font-size: 48px;">{% if 'Wood' in product.category %}&#127795;{% elif 'Sachet' in product.category %}&#127807;{% elif 'Talisman' in product.category %}&#9998;{% elif 'Jewelry' in product.category %}&#128142;{% elif 'Ritual' in product.category %}&#127760;{% elif 'Feng Shui' in product.category %}&#127808;{% else %}&#10024;{% endif %}</span>
+                    </div>
+                </a>
+                <div class="product-info">
+                    <span class="product-category">{{ product.category }}</span>
+                    <h3><a href="/product/{{ product.sku }}">{{ product.title[:60] }}{% if product.title|length > 60 %}...{% endif %}</a></h3>
+                    <div class="product-price">
+                        {% if product.private_order %}
+                        <span class="price" style="color:#c9a96e;">Private Order</span>
+                        {% else %}
+                        <span class="price">${{ "%.2f"|format(product.price) }}</span>
+                        {% if product.compare_at_price and product.compare_at_price > product.price %}
+                        <span class="compare-at">${{ "%.2f"|format(product.compare_at_price) }}</span>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                    {% if product.private_order %}
+                    <a href="/contact?product={{ product.sku }}" class="btn btn-outline btn-sm" style="color:#25D366;border-color:#25D366;">Inquire</a>
+                    {% else %}
+                    <button class="btn btn-primary btn-sm add-to-cart" data-sku="{{ product.sku }}" data-title="{{ product.title }}" data-price="{{ product.price }}">Add to Cart</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="center mt-20">
+            <a href="/products" class="btn btn-outline">View All Products</a>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services-section">
+    <div class="container">
+        <h2>Spiritual Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Blessing & Consecration</h3>
+                <p>Ritual opening of light (Kai Guang) for sacred objects, jewelry, and talismans</p>
+            </div>
+            <div class="service-card">
+                <h3>House Cleansing</h3>
+                <p>Complete home purification ritual (Jing Zhai) to clear stagnant and negative energies</p>
+            </div>
+            <div class="service-card">
+                <h3>Land & Kitchen Deity Placement</h3>
+                <p>Traditional An Tu Di and An Zao Shen ceremonies for harmonious living spaces</p>
+            </div>
+            <div class="service-card">
+                <h3>Ba Zi Astrology Reading</h3>
+                <p>In-depth Four Pillars of Destiny consultation for life path, career, and relationships</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="newsletter">
+    <div class="container">
+        <h2>Receive Guidance From the Cosmos</h2>
+        <p>Sign up for our newsletter and receive Taoist wisdom, full moon rituals, and exclusive offers.</p>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
