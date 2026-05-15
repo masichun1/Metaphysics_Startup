@@ -24,7 +24,7 @@ import random
 import sys
 import time
 import csv
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -583,16 +583,40 @@ class DailyOps:
     # ============================================================
     # 主运行
     # ============================================================
+    # 养号期配置：前N天只养号不发帖
+    WARMUP_DAYS = 3  # 纯养号天数
+    ACCOUNT_START_DATE = "2026-05-16"  # 账号开始养号日期
+
+    def _is_warmup_phase(self) -> bool:
+        """判断当前是否在养号期（不发帖）"""
+        start = datetime.strptime(self.ACCOUNT_START_DATE, "%Y-%m-%d")
+        days_elapsed = (datetime.now() - start).days
+        return days_elapsed < self.WARMUP_DAYS
+
+    def _first_post_date(self) -> str:
+        """返回第一篇帖子的发布日期"""
+        start = datetime.strptime(self.ACCOUNT_START_DATE, "%Y-%m-%d")
+        first_post = start + timedelta(days=self.WARMUP_DAYS)
+        return first_post.strftime("%Y年%m月%d日（周%u）")
+
     def run(self, skip_yanghao: bool = False):
         """执行每日全部运营任务"""
         print("=" * 60)
         print(f"   Mystic Sanctuary — 小红书每日运营")
         print(f"   {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+
+        warmup = self._is_warmup_phase()
+        if warmup:
+            days_left = self.WARMUP_DAYS - (datetime.now() - datetime.strptime(self.ACCOUNT_START_DATE, "%Y-%m-%d")).days
+            print(f"   🔥 养号期第{self.WARMUP_DAYS - days_left + 1}天 — 只刷不发")
+            print(f"   📅 第一篇文案将在 {self._first_post_date()} 发布")
+        else:
+            print(f"   ✅ 养号期结束，进入正常运营模式")
         print("=" * 60)
 
         with XHSOperator(headless=False) as self.op:
             # 验证登录
-            print("\n[1/7] 验证登录状态...")
+            print("\n[1] 验证登录状态...")
             self.op.page.goto("https://www.xiaohongshu.com/explore", timeout=30000, wait_until="domcontentloaded")
             self.safe_delay(3, 5)
             if "login" in self.op.page.url.lower():
@@ -600,7 +624,9 @@ class DailyOps:
                 return
             print("[OK] 登录状态正常")
             self.report["login_status"] = "OK"
+            self.report["phase"] = "warmup" if warmup else "normal"
 
+            # ====== 养号期 & 正常期 都执行 ======
             # Skill 01 — 数据追踪
             data = self.skill_01_data_tracking()
             self.check_rate_limit()
@@ -609,18 +635,26 @@ class DailyOps:
             competitor = self.skill_03_competitor_research()
             self.check_rate_limit()
 
-            # Skill 04 — 生成明天文案
-            next_post = self.skill_04_generate_post(competitor)
-            self.check_rate_limit()
+            # ====== 仅正常期执行 ======
+            if not warmup:
+                # Skill 04 — 生成明天文案
+                next_post = self.skill_04_generate_post(competitor)
+                self.check_rate_limit()
 
-            # Skill 02 — 评论监控
-            self.skill_02_comment_monitor()
-            self.check_rate_limit()
+                # Skill 02 — 评论监控
+                self.skill_02_comment_monitor()
+                self.check_rate_limit()
 
-            # Skill 05 — 引导关注话术
-            self.skill_05_conversion_scripts()
+                # Skill 05 — 引导关注话术
+                self.skill_05_conversion_scripts()
+            else:
+                print("\n  [养号期] 跳过: Skill 04(文案生成) / Skill 02(评论监控) / Skill 05(话术)")
+                print("  [养号期] 专注: 数据追踪 + 竞品调研 + 养号浏览")
+                self.report["skills"]["04_generate_post"] = {"status": "skipped_warmup"}
+                self.report["skills"]["02_comment_monitor"] = {"status": "skipped_warmup"}
+                self.report["skills"]["05_conversion"] = {"status": "skipped_warmup"}
 
-            # 养号
+            # 养号 (养号期和正常期都做)
             if not skip_yanghao:
                 self.yanghao(duration_minutes=30)
 
@@ -628,8 +662,11 @@ class DailyOps:
             self.generate_report()
 
         print("\n" + "=" * 60)
-        print(f"   每日运营完成!")
-        print(f"   下一篇文案已保存")
+        if warmup:
+            print(f"   养号期运营完成! (第{WARMUP_DAYS - days_left + 1}天/{WARMUP_DAYS}天)")
+            print(f"   第一篇文案: {self._first_post_date()} 发布")
+        else:
+            print(f"   每日运营完成! 下一篇文案已保存")
         print(f"   数据已归档")
         print("=" * 60)
 
