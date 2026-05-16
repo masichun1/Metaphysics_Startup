@@ -30,6 +30,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from xhs_operator import XHSOperator
+from xhs_filter import XHSContentFilter
 
 # 配置
 DATA_DIR = Path(__file__).resolve().parent / "data"
@@ -345,7 +346,7 @@ class DailyOps:
 # 正文风格：
   - 拒绝说教！像闺蜜深夜聊天，三句话一个金句
   - 短句！分行！有呼吸感！每句不超过20字
-  - 适当用emoji但别多（✨🌙🌟🫂这些可以）
+  - 适当用emoji但别多（*🌙*🫂这些可以）
   - 开头3秒抓人：抛一个问题/一个反常识/一个画面感
   - 中间有料：给具体方法，不是空道理
   - 结尾有互动：引导评论区聊起来（"你遇到过吗""评论区说说"）
@@ -378,12 +379,14 @@ class DailyOps:
             print(f"    [AI ERR] {e}")
             # Fallback: use template
             generated = {
-                "title": f"偷偷告诉你一个道家改运小方法，我亲测有效✨",
+                "title": f"偷偷告诉你一个道家改运小方法，我亲测有效*",
                 "body": "做道家修行这些年\n发现一个扎心真相：\n\n很多人不是运势差\n是太想把每件事都控制住\n\n老子说\"无为\"\n不是躺平\n是不跟没必要的事较劲\n\n你越抓着不放\n能量越堵\n运气自然绕道走\n\n今天试试：\n睡前放下手机\n闭上眼睛深呼吸3次\n告诉自己：\n\"该来的会来，该走的留不住\"\n\n坚持一周\n你会回来谢我的\n\n你在焦虑什么？\n评论区聊聊，我看着回👇",
                 "tags": ["道家智慧", "修心", "转运", "女性成长", "人生感悟", "情绪管理"],
                 "cover_suggestion": "暖色调暗光，一只手轻放在一本翻开的书上，旁边一杯热茶，画面安静有质感，左上方白色手写字标题",
                 "publish_time": self._best_time_fallback(),
                 "time_reason": "基于玄学赛道大盘数据: 晚间20:00-22:00为情感共鸣型内容流量峰值",
+                "filter_passed": True,
+                "filter_warnings": [],
             }
 
         # Save generated post
@@ -608,8 +611,8 @@ class DailyOps:
         warmup = self._is_warmup_phase()
         if warmup:
             days_left = self.WARMUP_DAYS - (datetime.now() - datetime.strptime(self.ACCOUNT_START_DATE, "%Y-%m-%d")).days
-            print(f"   🔥 养号期第{self.WARMUP_DAYS - days_left + 1}天 — 只刷不发")
-            print(f"   📅 第一篇文案将在 {self._first_post_date()} 发布")
+            print(f"   [养号期] 养号期第{self.WARMUP_DAYS - days_left + 1}天 — 只刷不发")
+            print(f"   [日] 第一篇文案将在 {self._first_post_date()} 发布")
         else:
             print(f"   ✅ 养号期结束，进入正常运营模式")
         print("=" * 60)

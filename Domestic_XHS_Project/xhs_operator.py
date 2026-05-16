@@ -115,32 +115,170 @@ class XHSOperator:
     # 核心操作
     # ============================================================
 
-    def login_with_qr(self):
-        """打开小红书登录页，等待用户扫码登录"""
-        print("[*] Opening XHS login page...")
+    def auto_login(self, phone: str = "17514046772", password: str = "") -> bool:
+        """自动登录 — 优先Cookie，过期则手机号+密码自动登录，最后才扫码
+
+        Args:
+            phone: 小红书账号手机号
+            password: 小红书密码（可选，填了就能全自动）
+
+        Returns:
+            是否登录成功
+        """
+        print("[*] Checking login status...")
         self.page.goto("https://www.xiaohongshu.com/explore", timeout=30000,
                        wait_until="domcontentloaded")
         self._random_delay(2, 3)
 
-        # 检查是否已登录
+        # 1. Cookie 仍有效
         if self._is_logged_in():
-            print("[OK] Already logged in!")
+            print("[OK]Session valid - logged in via saved cookies")
             return True
 
-        print("[*] Please scan QR code to log in (phone: 17514046772)...")
-        print("[*] Waiting for login (max 120 seconds)...")
+        print("[*]Cookies expired, attempting auto-login...")
 
-        # 等待登录成功（检查 Cookie 或页面元素）
+        # 2. 手机号 + 密码登录（全自动）
+        if password:
+            try:
+                return self._login_by_password(phone, password)
+            except Exception as e:
+                print(f"[WARN] Password login failed: {e}")
+
+        # 3. 手机号 + 验证码登录（需要手动输入验证码）
+        try:
+            return self._login_by_sms(phone)
+        except Exception as e:
+            print(f"[WARN] SMS login failed: {e}")
+
+        # 4. 最后方案：扫码
+        return self._login_by_qr()
+
+    def _login_by_password(self, phone: str, password: str) -> bool:
+        """手机号+密码登录"""
+        print("[*]Attempting phone+password login...")
+        self.page.goto("https://www.xiaohongshu.com/login", timeout=30000,
+                       wait_until="domcontentloaded")
+        self._random_delay(2, 3)
+
+        # Switch to phone login tab
+        try:
+            phone_tab = self.page.query_selector('text=手机号登录')
+            if phone_tab:
+                phone_tab.click()
+                self._random_delay(1, 2)
+        except:
+            pass
+
+        # Fill phone
+        try:
+            phone_input = self.page.query_selector('input[placeholder*="手机号"], input[type="tel"], input[name="phone"]')
+            if phone_input:
+                phone_input.click()
+                self._random_delay(0.5, 1)
+                phone_input.fill(phone)
+                self._random_delay(0.5, 1)
+        except Exception as e:
+            print(f"  [WARN] Phone input: {e}")
+
+        # Fill password
+        try:
+            pwd_input = self.page.query_selector('input[type="password"], input[placeholder*="密码"]')
+            if pwd_input:
+                pwd_input.click()
+                self._random_delay(0.5, 1)
+                pwd_input.fill(password)
+                self._random_delay(0.5, 1)
+        except Exception as e:
+            print(f"  [WARN] Password input: {e}")
+
+        # Click login
+        try:
+            login_btn = self.page.query_selector('button:has-text("登录"), button:has-text("登 录")')
+            if login_btn:
+                login_btn.click()
+        except:
+            pass
+
+        # Wait for login
+        for i in range(30):
+            time.sleep(1)
+            if self._is_logged_in():
+                print(f"[OK]Password login success! ({i+1}s)")
+                self._save_session()
+                return True
+
+        return False
+
+    def _login_by_sms(self, phone: str) -> bool:
+        """手机号+短信验证码登录（需要用户手动输入验证码）"""
+        print("[*]SMS verification login...")
+        self.page.goto("https://www.xiaohongshu.com/login", timeout=30000,
+                       wait_until="domcontentloaded")
+        self._random_delay(2, 3)
+
+        # Switch to phone login
+        try:
+            phone_tab = self.page.query_selector('text=手机号登录')
+            if phone_tab:
+                phone_tab.click()
+                self._random_delay(1, 2)
+        except:
+            pass
+
+        # Enter phone
+        try:
+            phone_input = self.page.query_selector('input[placeholder*="手机号"], input[type="tel"]')
+            if phone_input:
+                phone_input.click()
+                phone_input.fill(phone)
+                self._random_delay(0.5, 1)
+        except:
+            pass
+
+        # Click send code
+        try:
+            send_btn = self.page.query_selector('text=发送验证码, text=获取验证码')
+            if send_btn:
+                send_btn.click()
+                print("[*]Verification code sent to phone. Check SMS...")
+        except:
+            pass
+
+        # Wait for user to enter code (up to 5 min)
+        for i in range(300):
+            time.sleep(1)
+            if self._is_logged_in():
+                print(f"[OK]SMS login success! ({i+1}s)")
+                self._save_session()
+                return True
+            if i == 60:
+                print("  [*]Still waiting for SMS code...")
+
+        return False
+
+    def _login_by_qr(self) -> bool:
+        """扫码登录（最后方案）"""
+        print("[*] QR code login (last resort)...")
+        self.page.goto("https://www.xiaohongshu.com/explore", timeout=30000,
+                       wait_until="domcontentloaded")
+        self._random_delay(2, 3)
+
+        if self._is_logged_in():
+            print("[OK]Already logged in!")
+            return True
+
+        print("[*]Please scan QR code with XHS app (phone: 17514046772)...")
+
         for i in range(120):
             time.sleep(1)
             if self._is_logged_in():
-                print(f"[OK] Login successful after {i+1}s!")
+                print(f"[OK]QR login success after {i+1}s!")
                 self._save_session()
                 return True
-            if i % 10 == 0:
+            if i % 15 == 0 and i > 0:
                 print(f"    Waiting... {i}s")
 
-        print("[FAIL] Login timed out")
+        print("[FAIL]Login timed out")
         return False
 
     def search_notes(self, keyword: str, count: int = 20) -> list[dict]:

@@ -38,7 +38,10 @@
       "Bash(powershell.exe -NoProfile -Command \"Remove-Item -Recurse -Force 'D:\\\\马思纯\\\\app\\\\xiaohongshu-ops-skill', 'D:\\\\马思纯\\\\app\\\\XiaohongshuSkills' -ErrorAction SilentlyContinue; Get-ChildItem 'D:\\\\马思纯\\\\app' | Select-Object Name\")",
       "Bash(\"d:\\\\马思纯\\\\app\\\\venv_xhs\\\\Scripts\\\\python.exe\" xhs_operator.py login)",
       "Bash(\"d:\\\\马思纯\\\\app\\\\venv_xhs\\\\Scripts\\\\python.exe\" crawlers/knowledge_crawler.py)",
-      "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" auth login --web --hostname github.com)"
+      "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" auth login --web --hostname github.com)",
+      "Bash(powershell.exe -NoProfile -Command \"Get-ChildItem 'D:\\\\马思纯\\\\Metaphysics_Startup\\\\Domestic_XHS_Project\\\\skills\\\\external\\\\prohibited-word-detection' -Recurse -Name | Select-Object -First 30\")",
+      "Bash(powershell.exe -NoProfile -Command \"Get-Content 'D:\\\\马思纯\\\\Metaphysics_Startup\\\\Domestic_XHS_Project\\\\skills\\\\external\\\\prohibited-word-detection\\\\forbidden-words.js' -Encoding UTF8 | Select-Object -First 80\")",
+      "Bash(\"d:\\\\马思纯\\\\app\\\\venv_xhs\\\\Scripts\\\\python.exe\" \"d:\\\\马思纯\\\\Metaphysics_Startup\\\\Domestic_XHS_Project\\\\xhs_filter.py\")"
     ]
   }
 }
