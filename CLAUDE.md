@@ -29,4 +29,5 @@
 └── /Domestic_XHS_Project
     ├── CLAUDE.md
     └── 小红书运营_Claude.md
+    └── 小红书产品运营_Claude.md
 ```
