@@ -39,8 +39,15 @@ REPORT_DIR = DATA_DIR / "reports"
 CSV_DIR = DATA_DIR / "csv"
 
 # 关键词配置
-TRACK_KEYWORDS = ["命理", "塔罗", "八字", "星座", "道家", "风水"]
-COMPETITOR_KEYWORDS = ["道家玄学", "命理分析", "塔罗占卜", "八字算命", "星座运势"]
+TRACK_KEYWORDS = [
+    "道家神仙", "道教文化", "易经智慧", "传统文化", "中医养生",
+    "道学", "神仙故事", "国学经典", "黄帝内经", "道德经",
+    "文创", "高净值", "修行", "太极拳", "茶道"
+]
+COMPETITOR_KEYWORDS = [
+    "道家文化", "神仙故事", "易经讲解", "传统文化博主", "中医养生",
+    "国学智慧", "修行生活", "道德经解读", "道教神仙", "文创设计"
+]
 
 # 对标账号
 BENCHMARK_ACCOUNTS = [
@@ -455,7 +462,12 @@ class DailyOps:
         start = time.monotonic()
 
         # 养号行为：浏览首页 → 搜索关键词 → 看笔记 → 点赞/收藏 → 偶尔评论
-        yanghao_keywords = ["命理", "塔罗", "八字", "星座", "道家", "风水"]
+        yanghao_keywords = [
+    "道家神仙", "道教文化", "易经", "传统文化", "中医",
+    "国学", "道德经", "修行", "黄帝内经", "道教",
+    "神仙故事", "文创", "茶道", "香道", "太极拳",
+    "庄子", "老子", "道教神仙谱", "道藏", "养生"
+]
         actions = []
 
         while (time.monotonic() - start) < duration_seconds:
