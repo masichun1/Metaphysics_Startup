@@ -666,7 +666,7 @@ class DailyOps:
 
         print("\n" + "=" * 60)
         if warmup:
-            print(f"   养号期运营完成! (第{WARMUP_DAYS - days_left + 1}天/{WARMUP_DAYS}天)")
+            print(f"   养号期运营完成! (第{self.WARMUP_DAYS - days_left + 1}天/{self.WARMUP_DAYS}天)")
             print(f"   第一篇文案: {self._first_post_date()} 发布")
         else:
             print(f"   每日运营完成! 下一篇文案已保存")

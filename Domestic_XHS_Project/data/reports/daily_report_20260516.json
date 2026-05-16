@@ -1,0 +1,32 @@
+{
+  "date": "2026-05-16",
+  "started_at": "2026-05-16T13:00:23.062186",
+  "skills": {
+    "01_data_tracking": {
+      "total_notes": 12,
+      "keywords_used": 6,
+      "csv_path": "D:\\马思纯\\Metaphysics_Startup\\Domestic_XHS_Project\\data\\csv\\skill_01_data_20260516.csv"
+    },
+    "03_competitor": {
+      "viral_notes_found": 0,
+      "title_patterns": []
+    },
+    "04_generate_post": {
+      "status": "skipped_warmup"
+    },
+    "02_comment_monitor": {
+      "status": "skipped_warmup"
+    },
+    "05_conversion": {
+      "status": "skipped_warmup"
+    }
+  },
+  "yanghao": {
+    "duration_minutes": "30",
+    "actions": 55,
+    "keywords_browsed": 30
+  },
+  "next_post": {},
+  "login_status": "OK",
+  "phase": "warmup"
+}
