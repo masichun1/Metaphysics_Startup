@@ -44,29 +44,9 @@
     "value": "yjdq4qKf0YU4yjdq4qKSD88lWydvj2hIjxYSlYyECuuMfA280C0yqy888JWW4qY8DK40J24j",
     "domain": ".xiaohongshu.com",
     "path": "/",
-    "expires": 1813560444.406765,
+    "expires": 1813583075.845094,
     "httpOnly": false,
     "secure": false,
-    "sameSite": "Lax"
-  },
-  {
-    "name": "web_session",
-    "value": "040069790e73b0c451f1db163c384b4e3929c4",
-    "domain": ".xiaohongshu.com",
-    "path": "/",
-    "expires": 1810534962.460765,
-    "httpOnly": true,
-    "secure": true,
-    "sameSite": "Lax"
-  },
-  {
-    "name": "id_token",
-    "value": "VjEAAMSAAHH7lYRq1/KYmN4Ink+pavlkVApPhZKO0+eItwzr7VnXUCU5frbV2bFlyvPLYuyFXaRnGO/aABc2hBiuo7Oewkn8xhPIdlfI/NUAUawK7XXlJUBy5U8U+LeCizeqsy7y",
-    "domain": ".xiaohongshu.com",
-    "path": "/",
-    "expires": 1810534962.461023,
-    "httpOnly": true,
-    "secure": true,
     "sameSite": "Lax"
   },
   {
@@ -74,7 +54,7 @@
     "value": "CN",
     "domain": ".xiaohongshu.com",
     "path": "/",
-    "expires": 1810534962.461103,
+    "expires": 1810558855.050521,
     "httpOnly": true,
     "secure": true,
     "sameSite": "Lax"
@@ -84,7 +64,7 @@
     "value": "CN",
     "domain": ".xiaohongshu.com",
     "path": "/",
-    "expires": 1810534962.461171,
+    "expires": 1810558855.050644,
     "httpOnly": true,
     "secure": true,
     "sameSite": "Lax"
@@ -94,7 +74,7 @@
     "value": "xhs-pc-web",
     "domain": ".xiaohongshu.com",
     "path": "/",
-    "expires": 1810536440,
+    "expires": 1810559062,
     "httpOnly": false,
     "secure": false,
     "sameSite": "Lax"
@@ -110,61 +90,61 @@
     "sameSite": "Lax"
   },
   {
-    "name": "acw_tc",
-    "value": "0a00d69b17790004261988111ebda0bbe0947976337791eeff28f15b9c98f1",
-    "domain": "www.xiaohongshu.com",
+    "name": "web_session",
+    "value": "040069790e73b0c451f16ef43c384b3f2350b6",
+    "domain": ".xiaohongshu.com",
     "path": "/",
-    "expires": 1779002226.257464,
+    "expires": 1810558855.050037,
     "httpOnly": true,
-    "secure": false,
+    "secure": true,
     "sameSite": "Lax"
   },
   {
-    "name": "acw_tc",
-    "value": "0a4a65a917790004282791338e1c475ef58348bed314c1562a731ba86e48ef",
-    "domain": "edith.xiaohongshu.com",
+    "name": "id_token",
+    "value": "VjEAAOUzpWwzfr4zhQgLAV/bbHQ+JdcvBtJTCVoJKtTgk1/eoL5z6lUl9h9TgdZetolTjorCV0DF/h0tMhNCHVZYbZGZoavAaauRtDBYUbI9Pl8QqQ5JUgIfC8Q8+YAV8zsI/hg1",
+    "domain": ".xiaohongshu.com",
     "path": "/",
-    "expires": 1779002228.269832,
+    "expires": 1810558855.050367,
     "httpOnly": true,
+    "secure": true,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "loadts",
+    "value": "1779023062899",
+    "domain": ".xiaohongshu.com",
+    "path": "/",
+    "expires": 1810559062,
+    "httpOnly": false,
     "secure": false,
     "sameSite": "Lax"
   },
   {
     "name": "websectiga",
-    "value": "634d3ad75ffb42a2ade2c5e1705a73c845837578aeb31ba0e442d75c648da36a",
+    "value": "984412fef754c018e472127b8effd174be8a5d51061c991aadd200c69a2801d6",
     "domain": ".xiaohongshu.com",
     "path": "/",
-    "expires": 1779259628,
+    "expires": 1779283538,
     "httpOnly": false,
     "secure": false,
     "sameSite": "Lax"
   },
   {
     "name": "sec_poison_id",
-    "value": "ed41b8cf-13ae-4a2e-9dfe-7b92cf21bb9a",
+    "value": "4bd523ad-fa8c-4b07-bb1c-0de2a6cf4f4a",
     "domain": ".xiaohongshu.com",
     "path": "/",
-    "expires": 1779001033,
+    "expires": 1779024943,
     "httpOnly": false,
     "secure": false,
     "sameSite": "Lax"
   },
   {
     "name": "unread",
-    "value": "{%22ub%22:%2269fed5df00000000380227cc%22%2C%22ue%22:%226a01849c000000003701c86d%22%2C%22uc%22:25}",
+    "value": "{%22ub%22:%2269fc3dc40000000035020927%22%2C%22ue%22:%226a09c175000000000702b3a0%22%2C%22uc%22:31}",
     "domain": ".xiaohongshu.com",
     "path": "/",
     "expires": -1,
-    "httpOnly": false,
-    "secure": false,
-    "sameSite": "Lax"
-  },
-  {
-    "name": "loadts",
-    "value": "1779000440994",
-    "domain": ".xiaohongshu.com",
-    "path": "/",
-    "expires": 1810536440,
     "httpOnly": false,
     "secure": false,
     "sameSite": "Lax"

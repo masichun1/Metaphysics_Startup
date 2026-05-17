@@ -16,7 +16,14 @@ venv/
 data/logs/
 data/cache/cookies.json
 data/cache/*.db
+data/browser_profiles/
+data/*.png
+data/*.html
+data/exports/xhr_*.json
 *.log
+
+# Scripts (development utilities)
+scripts/
 
 # IDE
 .vscode/
