@@ -302,25 +302,42 @@ class StealthScraper:
         logger.info(f"search_notes '{keyword}' -> {len(notes)} results")
         return notes[:count]
 
-    async def get_user_notes(self, user_id: str, count: int = 30) -> list[dict]:
-        """获取用户笔记 — XHR 拦截版"""
-        page = await self._ensure_page()
-        self._clear_responses()
+    async def get_user_notes(self, user_id: str = "", author_name: str = "", count: int = 30) -> list[dict]:
+        """获取用户笔记 — 通过搜索作者名间接获取。
 
-        await page.goto(
-            f"https://www.xiaohongshu.com/user/profile/{user_id}",
-            timeout=30000,
-        )
-        await human_pause("after_page_load")
+        user_posted API 需要 X-S 签名，直接调用不可行。
+        改用搜索 API（按作者名搜索），从搜索结果中筛选该用户的笔记。
 
-        # 滚动触发 user_notes XHR
-        for _ in range(min(count // 10, 5)):
-            await page.mouse.wheel(0, random.randint(400, 800))
-            await human_pause("between_scrolls")
+        Args:
+            user_id: 用户 ID（可选，用于精确匹配）
+            author_name: 作者昵称（用于搜索）
+            count: 最多获取条数
+        """
+        if not author_name and not user_id:
+            return []
 
-        notes = self._parse_captured("user_notes")
-        logger.info(f"get_user_notes {user_id} -> {len(notes)} results")
-        return notes[:count]
+        # 优先用作者名搜索
+        keyword = author_name if author_name else user_id
+        all_notes = await self.search_notes(keyword, count=count * 2)
+
+        # 按作者名筛选
+        filtered = []
+        for n in all_notes:
+            if author_name and n.get("author") == author_name:
+                filtered.append(n)
+            elif user_id and n.get("author_id") == user_id:
+                filtered.append(n)
+
+        if not filtered:
+            # 模糊匹配
+            filtered = [
+                n for n in all_notes
+                if (author_name and author_name in n.get("author", ""))
+                or (user_id and user_id in n.get("author_id", ""))
+            ]
+
+        logger.info(f"get_user_notes author={author_name} -> {len(filtered)} results")
+        return filtered[:count]
 
     async def search_users(self, keyword: str, count: int = 10) -> list[dict]:
         """搜索用户 — XHR 拦截版"""
