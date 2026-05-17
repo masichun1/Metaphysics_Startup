@@ -45,7 +45,7 @@ METAPHYSICS_SAFE_MAP = {
     "肯定": "通常",
     "保证": "经验表明",
     "100%": "十有八九",
-    # 医疗功效词
+    # 医疗功效词（在自述症状语境下跳过: "我失眠了三年" = 自述,不替换）
     "治疗": "调理",
     "治愈": "改善",
     "疗效": "功效",
@@ -54,6 +54,7 @@ METAPHYSICS_SAFE_MAP = {
     "消炎": "舒缓",
     "杀菌": "净化",
     "排毒": "清理",
+    # "失眠""头痛"不在此映射——它们是常见自述词,由check()的上下文判断
     # 消费诱导
     "秒杀": "优选",
     "抢购": "选购",
@@ -117,6 +118,12 @@ class ContentSafetyChecker:
                     continue
                 # 跳过单字'最'在复合词中: 最近/最初/最终
                 if word == "最" and pos + 1 < len(text) and text[pos + 1] in "近初终早":
+                    continue
+                # 跳过常见自述症状(非医疗宣称): "我失眠了""头痛"
+                if word in ("失眠", "头痛", "偏头痛", "颈椎") and any(
+                    kw in text[max(0, pos - 5): pos]
+                    for kw in ["我", "开始", "一直", "经常", "总是", "有点", "出现"]
+                ):
                     continue
                 suggestion = METAPHYSICS_SAFE_MAP.get(word, "建议删除或替换")
                 hits.append(
