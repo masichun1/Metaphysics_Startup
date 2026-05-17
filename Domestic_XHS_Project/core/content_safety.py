@@ -112,6 +112,12 @@ class ContentSafetyChecker:
         for word in self.high_risk:
             if word and word in text:
                 pos = text.find(word)
+                # 跳过否定语境: "不保证""没有保证"等
+                if pos > 0 and text[pos - 1] in "不没并非":
+                    continue
+                # 跳过单字'最'在复合词中: 最近/最初/最终
+                if word == "最" and pos + 1 < len(text) and text[pos + 1] in "近初终早":
+                    continue
                 suggestion = METAPHYSICS_SAFE_MAP.get(word, "建议删除或替换")
                 hits.append(
                     {
@@ -176,10 +182,17 @@ class ContentSafetyChecker:
     def sanitize(self, text: str) -> str:
         """自动替换所有已知违禁词为安全版本"""
         result = text
-        # 先替换玄学赛道词
         for bad, good in METAPHYSICS_SAFE_MAP.items():
-            if bad in result:
-                result = result.replace(bad, good)
+            if bad not in result:
+                continue
+            # 跳过否定语境: "不保证""没有保证"
+            idx = result.find(bad)
+            if idx > 0 and result[idx - 1] in "不没并非":
+                continue
+            # 跳过单字'最'在复合词中
+            if bad == "最" and idx + 1 < len(result) and result[idx + 1] in "近初终早":
+                continue
+            result = result.replace(bad, good)
         return result
 
     def quick_check(self, text: str) -> bool:
