@@ -17,7 +17,8 @@ from core.logger import get_logger
 
 logger = get_logger("xhs.skill_03")
 
-_EXPORT_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "exports"
+_OUTPUT_BASE = Path("D:/马思纯/XHS")
+_EXPORT_DIR = _OUTPUT_BASE / datetime.now(timezone.utc).strftime("%Y-%m-%d") / "exports"
 
 # 四大合集对应的话题方向
 TOPIC_GROUPS = {

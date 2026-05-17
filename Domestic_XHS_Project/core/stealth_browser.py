@@ -17,6 +17,7 @@ logger = logging.getLogger("xhs.stealth_browser")
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = PROJECT_ROOT / "data" / "browser_profiles" / "stealth"
 COOKIE_PATH = PROJECT_ROOT / "data" / "cache" / "xhs_cookies.json"
+OUTPUT_BASE = Path("D:/马思纯/XHS")
 
 # 真人操作参数 (ms)
 HUMAN_DELAYS = {

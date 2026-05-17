@@ -18,8 +18,10 @@ from core.logger import get_logger
 
 logger = get_logger("xhs.skill_01")
 
-_EXPORT_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "exports"
-_CSV_DIR = _EXPORT_DIR.parent / "csv"
+_OUTPUT_BASE = Path("D:/马思纯/XHS")
+_EXPORT_DIR = _OUTPUT_BASE / datetime.now(timezone.utc).strftime("%Y-%m-%d") / "exports"
+_CSV_DIR = _OUTPUT_BASE / datetime.now(timezone.utc).strftime("%Y-%m-%d") / "csv"
+_POSTS_DIR = _OUTPUT_BASE / datetime.now(timezone.utc).strftime("%Y-%m-%d") / "posts"
 
 # 默认追踪关键词 — 基于玄学赛道四大合集
 DEFAULT_KEYWORDS = [
