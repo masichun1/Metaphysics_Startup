@@ -16,6 +16,7 @@ venv/
 data/logs/
 data/cache/cookies.json
 data/cache/*.db
+*.log
 
 # IDE
 .vscode/
