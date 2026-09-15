@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+assets/cat_open.png
+assets/cat_closed.png
+assets/_*.png
+dist/
+build/
+*.spec.bak
