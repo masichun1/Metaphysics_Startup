@@ -1,0 +1,5 @@
+rembg
+Pillow
+PySide6
+pytest
+pyinstaller
