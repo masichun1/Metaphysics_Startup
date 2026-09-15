@@ -16,8 +16,8 @@ MARGIN_RATIO = 1.08  # window is 8% larger than the sprite to fit breath/sway
 class PetWindow(QWidget):
     def __init__(self, open_path, closed_path, height=300):
         super().__init__()
-        self._open = QPixmap(open_path)
-        self._closed = QPixmap(closed_path)
+        self._open = QPixmap(open_path).scaledToHeight(height, Qt.SmoothTransformation)
+        self._closed = QPixmap(closed_path).scaledToHeight(height, Qt.SmoothTransformation)
         self._start = time.monotonic()
         self._blink = BlinkScheduler()
         self._reaction = None       # (kind, start_time) or None
