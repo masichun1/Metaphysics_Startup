@@ -18,6 +18,12 @@ class PetWindow(QWidget):
         super().__init__()
         self._open = QPixmap(open_path).scaledToHeight(height, Qt.SmoothTransformation)
         self._closed = QPixmap(closed_path).scaledToHeight(height, Qt.SmoothTransformation)
+        if self._open.isNull():
+            raise FileNotFoundError(
+                f"Cat image missing: {open_path}. Run `python -m pet.prepare_assets` first."
+            )
+        if self._closed.isNull():
+            self._closed = None  # no closed-eye image -> degrade to no blinking
         self._start = time.monotonic()
         self._blink = BlinkScheduler()
         self._reaction = None       # (kind, start_time) or None
@@ -85,6 +91,8 @@ class PetWindow(QWidget):
         return a
 
     def _is_blinking(self):
+        if self._closed is None:
+            return False
         return self._blink.tick(self._now())
 
     # --- render ---
