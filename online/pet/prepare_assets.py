@@ -5,7 +5,7 @@ Usage (from the online/ directory):
 """
 import os
 
-from pet.assets import remove_background, crop_to_content, align_pair
+from pet.assets import chroma_key_remove, crop_to_content, align_pair
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -19,8 +19,8 @@ def main():
 
     open_raw = os.path.join(OUT, "_cat_open_raw.png")
     closed_raw = os.path.join(OUT, "_cat_closed_raw.png")
-    remove_background(os.path.join(SRC, "cat_open.jpg"), open_raw)
-    remove_background(os.path.join(SRC, "cat_closed.jpg"), closed_raw)
+    chroma_key_remove(os.path.join(SRC, "cat_open.png"), open_raw)
+    chroma_key_remove(os.path.join(SRC, "cat_closed.png"), closed_raw)
 
     from PIL import Image
 

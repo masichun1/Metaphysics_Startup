@@ -40,3 +40,23 @@ def remove_background(src: str, dst: str) -> None:
     output_bytes = remove(input_bytes, session=session)
     with open(dst, "wb") as f:
         f.write(output_bytes)
+
+
+def chroma_key_remove(src: str, dst: str, threshold: int = 70, feather: int = 25) -> None:
+    """Remove a solid-color background via chroma key; write a transparent PNG.
+
+    Samples the background color from the four corners and sets each pixel's
+    alpha by its color distance from that background. Best for images with a
+    flat solid backdrop (e.g. the cartoon cat's blue background); use
+    remove_background (rembg) for photos with complex backgrounds.
+    """
+    import numpy as np
+
+    img = Image.open(src).convert("RGB")
+    arr = np.asarray(img).astype(np.float32)
+    h, w = arr.shape[:2]
+    bg = np.array([arr[3, 3], arr[3, w - 4], arr[h - 4, 3], arr[h - 4, w - 4]]).mean(axis=0)
+    dist = np.abs(arr - bg).sum(axis=2)
+    alpha = np.clip((dist - threshold) / feather * 255, 0, 255).astype(np.uint8)
+    rgba = np.dstack([arr.astype(np.uint8), alpha])
+    Image.fromarray(rgba, "RGBA").save(dst)
